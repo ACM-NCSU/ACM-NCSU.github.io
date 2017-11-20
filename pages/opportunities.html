@@ -1,0 +1,30 @@
+---
+layout: page
+permalink: /opportunities/
+---
+
+<div class="home">
+  <h1>Student Opportunities</h1>
+  <p>
+  Companies, local organizations, and other student organizations often come to ACM/AITP @NCSU presenting
+  special opportunities with our members.  Instead of incessant email blasts, all
+  of those opportunities can be viewed and acted upon here!
+  <br/><br/>
+  This page includes what is currently available to students, but read carefully for deadlines.
+  <strong>Opportunities pertain to:  Internships, Research, Local & Student Organizations</strong>
+  </p>
+  <br/><hr/><br/>
+
+  {% for post in site.posts %}
+    {% if post.categories contains 'opportunity' %}
+    <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+    <h2>
+      <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+    </h2>
+    <p>
+      {{ post.excerpt }}
+    </p>
+    {% endif %}
+  {% endfor %}
+
+</div>
