@@ -43,7 +43,17 @@ community and all of our sponsors over for good food! This is an annual
 tradition of the NC State CSC department, and we'd love to have you be a part!
 
 # Officers
-Coming soon!
+- President: Wade Moore
+- Vice President: Savannah Arnette
+- General Officers:
+    - Matt Dzwonczyk
+    - Joshua Kayani
+    - John Ravi
+    - Caeman Toombs
+    - Jack Kurtz
+    - Bryant Delgado
+
+Bios coming soon!
 
 # Sponsors
 Of course, none of this possible without the help of our sponsors, a subset
