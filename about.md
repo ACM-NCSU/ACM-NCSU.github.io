@@ -59,7 +59,7 @@ Our sponsors are incredible companies that provide resources to
 students and faculty to engage with industry, and our ACM/AITP chapter is
 very grateful! We'd specifically like to thank the following sponsors:
 
-<div>
+<div id="sponsors">
 {% for sponsor in site.data.sponsors %}
   {% if sponsor.link %}
     <a href="{{ sponsor.link }}" target="_blank" rel="noopener noreferrer">
