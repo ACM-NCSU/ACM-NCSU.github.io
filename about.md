@@ -42,30 +42,31 @@ These include Video Game Nights at Hunt Library, and hikes at Umstead Park.
 community and all of our sponsors over for good food! This is an annual
 tradition of the NC State CSC department, and we'd love to have you be a part!
 
-# Officers
-- President: Wade Moore
-- Vice President: Savannah Arnette
+# Leadership Team
+- President: Matt Dzwonczyk
+- Vice President: Joshua Kayani
 - General Officers:
-    - Matt Dzwonczyk
-    - Joshua Kayani
+    - Wade Moore
     - John Ravi
     - Caeman Toombs
     - Jack Kurtz
     - Bryant Delgado
 
-Bios coming soon!
-
 # Sponsors
-Of course, none of this possible without the help of our sponsors, a subset
-of [NC State's Computer Science e-Partners!](https://www.csc.ncsu.edu/corporate_relations/current-epartners.php)
+None of this possible without the help of our sponsors, a subset
+of [NC State's Computer Science e-Partners](https://www.csc.ncsu.edu/corporate_relations/current-epartners.php).
 Our sponsors are incredible companies that provide resources to
 students and faculty to engage with industry, and our ACM/AITP chapter is
-very grateful! We'd specifically like to thank:
-- Applied Systems
-- Dell EMC
-- Dude Solutions
-- Eastman
-- Premier
-- ROI Revolution
-- VMWare
+very grateful! We'd specifically like to thank the following sponsors:
 
+<div>
+{% for sponsor in site.data.sponsors %}
+  {% if sponsor.link %}
+    <a href="{{ sponsor.link }}" target="_blank" rel="noopener noreferrer">
+        <img src="{{site.baseurl}}/assets/images/sponsors/{{ sponsor.image-name }}" alt="{{ sponsor.name }}" />
+    </a>
+  {% else %}
+    <img src="{{site.baseurl}}/assets/images/sponsors/{{ sponsor.image-name }}" alt="{{ sponsor.name }}" />
+  {% endif %}
+{% endfor %}
+</div>

@@ -1,0 +1,47 @@
+- name: Advance Auto
+  image-name: advance-auto.jpg
+  link: https://www.advanceautoparts.jobs/
+
+- name: Blue Cross and Blue Shield of North Carolina
+  image-name: bcbs-nc.jpg
+  link: http://www.bcbsnc.com/content/careers/it.htm
+
+- name: Eastman
+  image-name: eastman.jpg
+  link: http://www.eastman.com/Pages/Home.aspx
+
+- name: Hughes
+  image-name: hughes.jpg
+  link: https://www.hughes.com/
+
+- name: KPIT
+  image-name: kpit.jpg
+  link: http://www.kpit.com/application-and-consulting-services/business-consulting/plm/home
+
+- name: MetLife
+  image-name: metlife.jpg
+  link: https://www.csc.ncsu.edu/corporate_relations/current-epartners.php
+
+- name: Prometheus Group
+  image-name: prometheus-group.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/274.jpg
+
+- name: ROI Revolution
+  image-name: roi-revolution.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/272.jpg
+
+- name: SAS
+  image-name: sas.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/64.jpg
+
+- name: SugarCRM
+  image-name: sugarcrm.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/309.jpg
+
+- name: Vanguard
+  image-name: vanguard.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/83.jpg
+
+- name: VMWare
+  image-name: vmware.jpg
+  link: https://www.csc.ncsu.edu/enews/images/corp_relations/229.jpg
