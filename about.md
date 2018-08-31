@@ -14,7 +14,7 @@ minded individuals who seek to expand their potential.
 
 At [North Carolina State University](http://ncsu.edu), the student chapters of these two
 organizations are combined and serve students as a
-joint body, the NCSU Student ACM/AITP. As an active part of the Computer Science
+joint body, the NC State Student ACM/AITP. As an active part of the Computer Science
 Department here at NC State, ACM/AITP provides opportunities throughout the year
 for students to get involved in their department and learn about the exciting
 job opportunities awaiting them in this growing field.
@@ -23,7 +23,7 @@ job opportunities awaiting them in this growing field.
 to see when and where we're having our next event!
 
 # Events
-We hold a number of events each semester such as:
+We hold a number of events each semester including:
 
 + **[Tech Talks]({{site.baseurl}}/techtalks)** where professionals come to give a short presentation on
 their company or a technology that they are passionate about. Previous
@@ -38,7 +38,7 @@ that use them everyday.
 + **Social Events** that strengthen the local computer science community.
 These include Video Game Nights at Hunt Library, and hikes at Umstead Park.
 
-+ **Pig Pickin'** which is our annual barbecue event where we invite the whole
++ **Year End Pig Pickin'** which is our annual barbecue event where we invite the whole
 community and all of our sponsors over for good food! This is an annual
 tradition of the NC State CSC department, and we'd love to have you be a part!
 
@@ -70,3 +70,13 @@ very grateful! We'd specifically like to thank the following sponsors:
   {% endif %}
 {% endfor %}
 </div>
+
+# Becoming a Sponsor
+Becoming a sponsor of ACM/AITP at NC State is a great way to get access to the
+huge amount of Computer Science talent produced at NC State.
+If your organization is interested in becoming an ePartner or sponsor of ACM/AITP at NC State, please take a look at the
+[Becoming an ePartner](https://www.csc.ncsu.edu/corporate_relations/become-an-epartner.php) guide.
+
+We really appreciate all of the support our sponsors provide, and would love to 
+create a partnership with your organization and have you come on
+campus for some of our events!
