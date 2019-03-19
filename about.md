@@ -40,16 +40,14 @@ These include Video Game Nights at Hunt Library, and hikes at Umstead Park.
 
 + **Year End Pig Pickin'**, which is our annual barbecue event where we invite the whole
 community and all of our sponsors over for good food! This is an annual
-tradition of the NC State CSC department, and we'd love to have you be a part!
+tradition of the NC State Department of Computer Science, and we'd love to have you be a part!
 
 # Leadership Team
 - President: Matt Dzwonczyk
-- Vice President: Joshua Kayani
+- Vice President: Jack MacDonald
 - General Officers:
     - Wade Moore
     - John Ravi
-    - Caeman Toombs
-    - Jack Kurtz
     - Bryant Delgado
 
 # Sponsors
