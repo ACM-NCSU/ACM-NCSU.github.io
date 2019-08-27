@@ -2,14 +2,14 @@
   image-name: eastman.jpg
   link: http://www.eastman.com/Pages/Home.aspx
 
+- name: PRAHealthSciences
+  image-name: pra.jpg
+  link: https://www.prahs.com/careers/
+
 - name: SugarCRM
   image-name: sugarcrm.jpg
-  link: https://www.csc.ncsu.edu/enews/images/corp_relations/309.jpg
+  link: https://www.sugarcrm.com/
 
 - name: VMWare
   image-name: vmware.jpg
-  link: https://www.csc.ncsu.edu/enews/images/corp_relations/229.jpg
-
-- name: PRAHealthSciences
-  image-name: pra.jpg
-  link: https://www.csc.ncsu.edu/enews/images/corp_relations/328.jpg
+  link: http://www.vmware.com/
