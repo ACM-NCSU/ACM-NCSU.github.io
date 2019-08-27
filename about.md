@@ -46,9 +46,8 @@ tradition of the NC State Department of Computer Science, and we'd love to have 
 - President: Matt Dzwonczyk
 - Vice President: Jack MacDonald
 - General Officers:
-    - Wade Moore
-    - John Ravi
     - Bryant Delgado
+    - Piyush Sangwan
 
 # Sponsors
 None of this possible without the help of our sponsors, a subset
