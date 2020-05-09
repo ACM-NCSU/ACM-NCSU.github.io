@@ -42,13 +42,6 @@ These include Video Game Nights at Hunt Library, and hikes at Umstead Park.
 community and all of our sponsors over for good food! This is an annual
 tradition of the NC State Department of Computer Science, and we'd love to have you be a part!
 
-# Leadership Team
-- President: Matt Dzwonczyk
-- Vice President: Jack MacDonald
-- General Officers:
-    - Bryant Delgado
-    - Piyush Sangwan
-
 # Sponsors
 None of this possible without the help of our sponsors, a subset
 of [NC State's Computer Science e-Partners](https://www.csc.ncsu.edu/corporate_relations/current-epartners.php).
