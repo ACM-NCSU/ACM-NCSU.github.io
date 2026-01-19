@@ -1,0 +1,429 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+// Get all events and sort by date
+const allEvents = await getCollection('events');
+const now = new Date();
+
+// Separate upcoming and past events
+const upcomingEvents = allEvents
+    .filter(event => new Date(event.data.date) >= now)
+    .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+const pastEvents = allEvents
+    .filter(event => new Date(event.data.date) < now)
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Format date helper
+function formatDate(date: Date, endDate?: Date) {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'America/New_York'
+    });
+    
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'America/New_York'
+    });
+    
+    if (endDate) {
+        return formatter.format(date) + ' - ' + timeFormatter.format(endDate);
+    }
+    return formatter.format(date);
+}
+
+function formatLongDate(date: Date, endDate?: Date) {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'America/New_York'
+    });
+    
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'America/New_York'
+    });
+    
+    if (endDate) {
+        return formatter.format(date) + ' - ' + timeFormatter.format(endDate);
+    }
+    return formatter.format(date);
+}
+
+// Render event content to HTML
+const eventContents = await Promise.all(
+    allEvents.map(async (event) => {
+        const { Content } = await event.render();
+        return { slug: event.slug, Content };
+    })
+);
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+    <body>
+        <Header />
+        <main>
+            <section class="events-section">
+                <h2>Upcoming Events</h2>
+                {upcomingEvents.length > 0 ? (
+                    <div class="events-grid">
+                        {upcomingEvents.map((event) => (
+                            <button class="event-card" data-event-slug={event.slug}>
+                                <div class="event-image">
+                                    <Image src={event.data.image} alt={event.data.title} width={400} height={300} quality={90} />
+                                </div>
+                                <div class="event-content">
+                                    <h3>{event.data.title}</h3>
+                                    <p class="event-date">{formatDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined)}</p>
+                                    {event.data.location && (
+                                        <p class="event-location">{event.data.location}</p>
+                                    )}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="no-events">No upcoming events at this time. Check back soon!</p>
+                )}
+            </section>
+
+            <section class="events-section">
+                <h2>Past Events</h2>
+                {pastEvents.length > 0 ? (
+                    <div class="events-grid">
+                        {pastEvents.map((event) => (
+                            <button class="event-card" data-event-slug={event.slug}>
+                                <div class="event-image">
+                                    <Image src={event.data.image} alt={event.data.title} width={400} height={300} quality={90} />
+                                </div>
+                                <div class="event-content">
+                                    <h3>{event.data.title}</h3>
+                                    <p class="event-date">{formatDate(new Date(event.data.date))}</p>
+                                    {event.data.location && (
+                                        <p class="event-location">{event.data.location}</p>
+                                    )}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="no-events">No past events yet.</p>
+                )}
+            </section>
+        </main>
+
+        <!-- Modal -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+                <div id="modal-body">
+                    <!-- Event content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden event data -->
+        <div id="event-data" style="display: none;">
+            {allEvents.map((event) => {
+                const content = eventContents.find(c => c.slug === event.slug);
+                return (
+                    <div data-slug={event.slug}>
+                        <Image src={event.data.image} alt={event.data.title} class="modal-header-image" width={1600} height={600} quality={90} />
+                        <div class="modal-text-content">
+                            <h1>{event.data.title}</h1>
+                            <div class="event-meta">
+                                <p class="event-date">{formatLongDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined)}</p>
+                                {event.data.location && (
+                                    <p class="event-location">📍 {event.data.location}</p>
+                                )}
+                            </div>
+                            <div class="prose">
+                                {content && <content.Content />}
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+
+        <Footer />
+    </body>
+</html>
+
+<script>
+    const modal = document.getElementById('event-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.querySelector('.modal-close');
+    const eventCards = document.querySelectorAll('.event-card');
+    const eventData = document.getElementById('event-data');
+
+    // Open modal when event card is clicked
+    eventCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const slug = card.getAttribute('data-event-slug');
+            const eventContent = eventData?.querySelector(`[data-slug="${slug}"]`);
+            
+            if (eventContent && modalBody) {
+                modalBody.innerHTML = eventContent.innerHTML;
+                modal?.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    // Close modal
+    function closeModal() {
+        modal?.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalClose?.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal?.classList.contains('active')) {
+            closeModal();
+        }
+    });
+</script>
+
+<style>
+    h1 {
+        margin-bottom: 2rem;
+    }
+
+    .events-section {
+        margin-bottom: 4rem;
+    }
+
+    .events-section h2 {
+        color: black;
+        margin-bottom: 1.5rem;
+    }
+
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .event-card {
+        display: block;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-align: left;
+        width: 100%;
+    }
+
+    .event-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background-color: rgb(var(--gray-light));
+    }
+
+    .event-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    .event-content {
+        padding: 1.25rem;
+    }
+
+    .event-content h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        color: rgb(var(--black));
+    }
+
+    .event-date {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--wolfpack-red);
+        font-weight: 600;
+    }
+
+    .event-location {
+        margin: 0.5rem 0 0 0;
+        font-size: 0.85rem;
+        color: rgb(var(--gray));
+    }
+
+    .no-events {
+        text-align: center;
+        color: rgb(var(--gray));
+        font-style: italic;
+        padding: 2rem 0;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        overflow: auto;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 2rem;
+        padding: 0;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+        z-index: 10;
+    }
+
+    .modal-close:hover {
+        background-color: var(--wolfpack-red);
+    }
+
+    .modal-header-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        margin: 0;
+        border-radius: 12px 12px 0 0;
+        display: block;
+    }
+
+    .modal-text-content {
+        padding: 2rem;
+    }
+
+    #modal-body h1 {
+        margin-top: 0;
+    }
+
+    #modal-body .event-meta {
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+        background-color: rgb(var(--gray-light));
+        border-radius: 8px;
+    }
+
+    #modal-body .event-date {
+        color: var(--wolfpack-red);
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    #modal-body .event-location {
+        margin: 0;
+        color: rgb(var(--gray-dark));
+    }
+
+    #modal-body .prose {
+        line-height: 1.8;
+    }
+
+    @media (max-width: 768px) {
+        .events-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            margin: 1rem;
+            max-height: 95vh;
+        }
+
+        .modal-header-image {
+            height: 200px;
+        }
+
+        .modal-text-content {
+            padding: 1.5rem;
+        }
+    }
+</style>

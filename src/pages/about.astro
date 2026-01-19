@@ -1,0 +1,670 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { Icon } from 'astro-icon/components';
+import thinkingImg from '../assets/headshots/thinking.jpg';
+
+import cooperImage from '../assets/headshots/cooper.png'
+import nickImage from '../assets/headshots/nwsutton.jpg'
+import titusImg from '../assets/headshots/ktitus.jpg'
+import gawedaImg from '../assets/headshots/agaweda.jpg'
+
+const executiveBoard = [
+    {
+        name: "Cooper Sizemore",
+        pronouns: "he/him",
+        title: "President",
+        gradYear: "Spring 2027",
+        major: "B.S. Computer Science",
+        minor: "Business Administration",
+        image: cooperImage,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/cooper-sizemore/",
+            github: "https://github.com/coopersizemore"
+        },
+        bio: "I'm Cooper, a motivated CSC student with a passion for solving hard problems and helping others. I love listening to new music, cooking, and playing games with friends."
+    },
+    {
+        name: "Kerneep Sandhu",
+        pronouns: "he/him",
+        title: "Vice President",
+        gradYear: "Fall 2026",
+        major: "B.S. Computer Science",
+        minor: null,
+        image: thinkingImg,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/kerneep-s/",
+            github: null
+        },
+        bio: "Hi yall, I'm Kerneep. I like talking to people, and planning events. Outside of coursework, you will usually find me reading comics or watching YouTube, or doing something else other than coursework. "
+    },
+    {
+        name: "Cole Hincken",
+        pronouns: "he/him",
+        title: "Secretary",
+        gradYear: "Spring 2027",
+        major: "B.S. Computer Science",
+        minor: null,
+        image: thinkingImg,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/cole-hincken/",
+            github: "https://github.com/Shneagan"
+        },
+        bio: "BIO"
+    },
+    {
+        name: "Nidhi Grover",
+        pronouns: "she/her",
+        title: "Treasurer",
+        gradYear: "Spring 2026",
+        major: "B.S. Computer Science",
+        minor: "Statistics",
+        image: thinkingImg,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/nidhi-grover2026/",
+            github: null
+        },
+        bio: "Hi everyone, Nidhi here! Glad to be part of ACM NCSU as the Treasurer. I'm excited to pursue a career at the intersection of Data Science, AI and Machine Learning. Outside of academics, you will usually find me reading, drawing, watching TV shows/movies or talking about cats :)"
+    },
+    {
+        name: "Nora Cam",
+        pronouns: "she/her",
+        title: "Event Coordinator",
+        gradYear: "Spring 2027",
+        major: "B.S. Computer Science",
+        minor: "Global Leadership & Team Decision-Making, Music Studies",
+        image: thinkingImg,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/noranhc/",
+            github: "https://github.com/noranhc"
+        },
+        bio: "Hi, I'm Nora! I like bringing people together and making cool stuff happen. Professionally, I'm interested in systems and software engineering. In my free time, I enjoy listening to music, watching video essays, and writing about my thoughts."
+    },
+    {
+        name: "John Nguyen",
+        pronouns: "he/him",
+        title: "Head of Advertising",
+        gradYear: "Spring 2027",
+        major: "M.S. Computer Science",
+        minor: null,
+        image: thinkingImg,
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/john-nguyen-62058319b/",
+            github: null
+        },
+        bio: "BIO"
+    },
+    {
+        name: "Nicholas Sutton",
+        pronouns: "he/they",
+        title: "Webmaster",
+        gradYear: "Spring 2027",
+        major: "B.S. Computer Science",
+        minor: "Mathematics",
+        image: nickImage,
+        links: {
+            website: "https://nick-sutton.github.io/",
+            linkedin: null,
+            github: null
+        },
+        bio: "Hello, I'm Nick! My academic interests include Robotics, Software Systems, and Programming Languages. My favorite languages are Rust, Julia, and C. Outside of academics, I enjoy cooking, sculpting, building scale models, playing bass guitar, and gaming—Elden Ring and Minecraft are some of my favorites."
+    },
+];
+
+const facultyAdvisors = [
+    {
+        name: "Dr. Kimberly Titus",
+        pronouns: null,
+        title: "Associate Teaching Professor",
+        department: "Computer Science",
+        gradYear: null,
+        major: null,
+        minor: null,
+        image: titusImg,
+        links: {
+            website: "https://csc.ncsu.edu/people/kjtitus3/",
+            linkedin: "www.linkedin.com/in/nwsutton",
+            github: "https://github.com/nick-Sutton"
+        },
+        bio: null
+    },
+    {
+        name: "Dr. Adam Gaweda",
+        pronouns: null,
+        title: "Assistant Teaching Professor",
+        department: "Computer Science",
+        gradYear: null,
+        major: null,
+        minor: null,
+        image: gawedaImg,
+        links: {
+            website: "https://csc.ncsu.edu/people/agaweda/",
+            linkedin: null,
+            github: null
+        },
+        bio: null
+    },
+];
+
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+</head>
+<body>
+<Header />
+<main class="about-content">
+    <h2>About Us</h2>
+    <p>
+        ACM at NCSU is the student chapter of the <a href="https://www.acm.org/" target="_blank">Association for Computing Machinery</a> at North Carolina State University.
+        ACM is the world's largest educational and scientific computing organization.
+    </p>
+    <p>
+        We're dedicated to building an inclusive community of computing students, academics, and professionals
+        at NC State. Students and faculty from any discipline with an interest in computing are welcome to 
+        attend ACM at NCSU events and join us in fostering curiosity in the computational sciences.
+    </p>
+    <p>
+        We focus on introducing new students to the breadth of computer science while helping upperclassmen advance 
+        their careers through networking events, skill-building workshops, and internship connections.
+    </p>
+    <p>
+        You can get involved in ACM at NCSU by attending our variety of
+        events, including socials, educational talks, and industry networking sessions.
+        At these events, you'll meet a diverse group of students passionate about
+        computing, along with professors and industry leaders.
+    </p>
+
+    <h2>Leadership</h2>
+    
+    <h3 class="subsection-title">Executive Board</h3>
+    <div class="board-grid">
+        {executiveBoard.map((member, index) => (
+            <button class="member-card" data-member-index={index} data-member-type="executive">
+                <img src={member.image.src} alt={member.name} class="member-image" />
+                <div class="member-info">
+                    <h3 class="member-name">{member.name}</h3>
+                    <div class="member-title">{member.title}</div>
+                </div>
+            </button>
+        ))}
+    </div>
+
+    <h2 class="subsection-title">Faculty Advisors</h2>
+    <div class="board-grid">
+        {facultyAdvisors.map((member, index) => (
+            <button class="member-card" data-member-index={index} data-member-type="faculty">
+                <img src={member.image.src} alt={member.name} class="member-image" />
+                <div class="member-info">
+                    <h3 class="member-name">{member.name}</h3>
+                    <div class="member-title">{member.title}</div>
+                </div>
+            </button>
+        ))}
+    </div>
+
+	<!-- Add Sponsor Section here -->
+	<!-- <h1 class="section-title">Sponsors</h1> -->
+</main>
+
+<!-- Modal -->
+<div id="member-modal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Close modal">&times;</button>
+        <div id="modal-body">
+            <!-- Member content will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Hidden member data -->
+<div id="member-data" style="display: none;">
+    {executiveBoard.map((member, index) => (
+        <div data-member-index={index} data-member-type="executive">
+            <div class="modal-member-layout">
+                <div class="modal-member-image-container">
+                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <div class="member-social-links">
+                        {member.links.website && (
+                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s website</span>
+                                <Icon name="mdi:web" width="32" height="32" />
+                            </a>
+                        )}
+                        {member.links.linkedin && (
+                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
+                                <Icon name="mdi:linkedin" width="32" height="32" />
+                            </a>
+                        )}
+                        {member.links.github && (
+                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s GitHub</span>
+                                <Icon name="mdi:github" width="32" height="32" />
+                            </a>
+                        )}
+                    </div>
+                </div>
+                <div class="modal-member-info">
+                    <h1>{member.name}</h1>
+                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
+                    <p class="member-role">{member.title}</p>
+                    <div class="member-details-list">
+                        <p><strong>Major:</strong> {member.major}</p>
+                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
+                        <p><strong>Graduation:</strong> {member.gradYear}</p>
+                    </div>
+                    <div class="member-bio">
+                        <p>{member.bio}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ))}
+    {facultyAdvisors.map((member, index) => (
+        <div data-member-index={index} data-member-type="faculty">
+            <div class="modal-member-layout">
+                <div class="modal-member-image-container">
+                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <div class="member-social-links">
+                        {member.links.website && (
+                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s website</span>
+                                <Icon name="mdi:web" width="32" height="32" />
+                            </a>
+                        )}
+                        {member.links.linkedin && (
+                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
+                                <Icon name="mdi:linkedin" width="32" height="32" />
+                            </a>
+                        )}
+                        {member.links.github && (
+                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Visit {member.name}'s GitHub</span>
+                                <Icon name="mdi:github" width="32" height="32" />
+                            </a>
+                        )}
+                    </div>
+                </div>
+                <div class="modal-member-info">
+                    <h1>{member.name}</h1>
+                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
+                    <p class="member-role">{member.title}</p>
+                    <div class="member-details-list">
+                        <p><strong>Department:</strong> {member.department}</p>
+                    </div>
+                    <div class="member-bio">
+                        <p>{member.bio}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ))}
+</div>
+
+<Footer />
+</body>
+</html>
+
+<script>
+    const modal = document.getElementById('member-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.querySelector('.modal-close');
+    const memberCards = document.querySelectorAll('.member-card');
+    const memberData = document.getElementById('member-data');
+
+    // Open modal when member card is clicked
+    memberCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const index = card.getAttribute('data-member-index');
+            const type = card.getAttribute('data-member-type');
+            const memberContent = memberData?.querySelector(`[data-member-index="${index}"][data-member-type="${type}"]`);
+            
+            if (memberContent && modalBody) {
+                modalBody.innerHTML = memberContent.innerHTML;
+                modal?.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    // Close modal
+    function closeModal() {
+        modal?.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalClose?.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal?.classList.contains('active')) {
+            closeModal();
+        }
+    });
+</script>
+
+<style>
+    .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .about-content p {
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-content a {
+        color: var(--wolfpack-red);
+        text-decoration: none;
+    }
+
+    .about-content a:hover {
+        text-decoration: underline;
+    }
+
+    .board-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        max-width: 1200px;
+    }
+
+    .member-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-align: left;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .member-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .member-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        background: #f0f0f0;
+    }
+
+    .member-info {
+        padding: 1rem;
+    }
+
+    .member-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0 0 0.25rem 0;
+        color: #333;
+    }
+
+    .member-title {
+        color: var(--wolfpack-red);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin: 3rem 0 1rem 0;
+        color: #333;
+    }
+
+    .subsection-title {
+        font-size: 1.5rem;
+        margin: 2rem 0 1rem 0;
+        color: #666;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        overflow: auto;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 2rem;
+        padding: 0;
+        border-radius: 12px;
+        max-width: 900px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+        background: white;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-close:hover {
+        background-color: var(--wolfpack-red);
+        color: white;
+    }
+
+    .modal-member-layout {
+        display: flex;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .modal-member-image-container {
+        flex-shrink: 0;
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .modal-member-image {
+        width: 280px;
+        height: 350px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .member-social-links {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .member-social-links a {
+        text-decoration: none;
+        color: #666;
+        display: inline-block;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .member-social-links a:hover {
+        color: var(--wolfpack-red);
+        transform: translateY(-5px);
+    }
+
+    .modal-member-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-member-info h1 {
+        margin: 0 0 0.25rem 0;
+        font-size: 2rem;
+        color: #333;
+    }
+
+    .member-pronouns {
+        color: #666;
+        font-size: 1rem;
+        font-style: italic;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .member-role {
+        color: var(--wolfpack-red);
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .member-details-list {
+        background-color: #f5f5f5;
+        padding: 1.25rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .member-details-list p {
+        margin: 0.5rem 0;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .member-details-list strong {
+        color: #333;
+    }
+
+    .member-bio {
+        line-height: 1.8;
+        color: #444;
+    }
+
+    .member-bio p {
+        margin: 0;
+    }
+
+    @media (max-width: 1200px) {
+        .board-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .board-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            justify-items: center;
+        }
+
+        .member-card {
+            max-width: 250px;
+        }
+
+        .modal-content {
+            margin: 1rem;
+            max-height: 95vh;
+        }
+
+        .modal-member-layout {
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .modal-member-image-container {
+            width: 100%;
+            align-items: center;
+        }
+
+        .modal-member-image {
+            width: 100%;
+            max-width: 280px;
+            height: 350px;
+        }
+
+        .modal-member-info h1 {
+            font-size: 1.5rem;
+        }
+    }
+</style>

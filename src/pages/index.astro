@@ -1,0 +1,199 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+// Logos
+import acmLogo from '../assets/logos/acm_ncsu_logo.png';
+
+// Slideshow images
+import slide1 from '../assets/slideshow/IMG_3554.JPG';
+import slide2 from '../assets/slideshow/IMG_5606.png';
+import slide3 from '../assets/slideshow/IMG_3548.JPG';
+import slide4 from '../assets/slideshow/IMG_5604.png';
+import slide5 from '../assets/slideshow/IMG_3562.JPG';
+import slide6 from '../assets/slideshow/IMG_6118.png';
+import slide7 from '../assets/slideshow/IMG_3552.JPG';
+
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+// Array of slideshow images
+const slideshowImages = [
+    slide1.src, 
+    slide2.src,
+    slide3.src,
+    slide4.src,
+    slide5.src,
+    slide6.src,
+    slide7.src,
+];
+
+// Fixed dimensions for slideshow (based on first image)
+const SLIDESHOW_WIDTH = 3888;
+const SLIDESHOW_HEIGHT = 2592;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <div class="intro-section">
+                <div class="intro-content">
+                    <h1>Welcome to ACM @ NCSU</h1>
+                    <p>
+                        We bring together computer scientists, engineers, and tech enthusiasts 
+                        to create an inclusive community that supports exploration and personal development.
+                    </p>
+                    <div class="button-group">
+                        <a href="/acm_ncsu/events"><button>Events</button></a>
+                        <a href="/acm_ncsu/involved"><button>Get Involved</button></a>
+                    </div>
+                </div>
+                <Image 
+                    src={acmLogo} 
+                    alt="ACM Logo"
+                    width={300}
+                    quality={100}
+                    format="png"
+                />
+            </div>
+            
+            <div class="slideshow-container">
+                {slideshowImages.map((src, index) => (
+                    <div class="slide" data-index={index}>
+                        <img 
+                            src={src} 
+                            alt={`ACM @ NCSU Event Photo ${index + 1}`}
+                            class="slide-image"
+                        />
+                    </div>
+                ))}
+            </div>
+        </main>
+        <Footer />
+    </body>
+</html>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(n: number) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    // Initialize
+    showSlide(0);
+    
+    // Auto-advance every 5 seconds
+    setInterval(nextSlide, 5000);
+</script>
+
+<style>
+    .intro-section {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+    }
+
+    .intro-content {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .intro-content h1 {
+        margin-bottom: 1rem;
+    }
+
+    .intro-content p {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .button-group button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        border: none;
+        background-color: var(--wolfpack-red);
+        color: var(--wolfpack-white);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button-group button:hover {
+        background-color: #990000;
+    }
+
+    .intro-section img {
+        max-width: 300px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    /* Slideshow Styles */
+    .slideshow-container {
+        position: relative;
+        width: 100%;
+        max-width: 3888px;
+        aspect-ratio: 3888 / 2592;
+        margin: 3rem auto;
+        overflow: hidden;
+        border-radius: 8px;
+        background-color: #000;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .slide :global(.slide-image) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .intro-section {
+            flex-direction: column;
+        }
+
+        .intro-section img {
+            max-width: 100%;
+        }
+    }
+</style>

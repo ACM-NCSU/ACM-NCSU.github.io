@@ -1,0 +1,39 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+            <h2>Get Involved with ACM at NCSU</h2>
+            <p>
+				Thank you for your interest! Joining ACM at NC State is a great way to 
+				strengthen your connection with our student community, faculty, and tech professionals across the Triangle.
+            </p>
+			<h3>For Students</h3>
+			<p>
+				The easiest way to get involved in ACM at NCSU is to come to our events. We recommend joining the <a href="https://discord.gg/5DzjFzhgGT">Discord</a> to get updates
+				on our upcoming events. If you would like to become an official member you can visit our <a href="https://getinvolved.ncsu.edu/organization/acm-ncsu">Get Involved</a> page.
+
+				<!-- Add Information about committees later -->
+				 <!-- Add Information about joining the board -->
+			</p>
+
+            <h3>For Organizers</h3>
+			<p>
+				<!-- Figure out sponsor information -->
+			</p>
+
+		</main>
+		<Footer />
+	</body>
+</html>

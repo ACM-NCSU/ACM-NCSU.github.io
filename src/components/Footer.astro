@@ -1,0 +1,45 @@
+---
+import { Icon } from 'astro-icon/components';
+const today = new Date();
+---
+<footer>
+  &copy; {today.getFullYear()} ACM Student Chapter of North Carolina State University. All rights reserved.
+  <div class="social-links">
+    <a href="https://www.linkedin.com/company/association-for-computing-machinery-nc-state/posts/?feedView=all" target="_blank">
+      <span class="sr-only">Follow NCSU ACM on Linkedin</span>
+      <Icon name="mdi:linkedin" width="32" height="32" />
+    </a>
+    <a href="https://discord.gg/5DzjFzhgGT" target="_blank">
+      <span class="sr-only">Join our Discord</span>
+      <Icon name="mdi:discord" width="32" height="32" />
+    </a>
+    <a href="https://github.com/ACM-NCSU" target="_blank">
+      <span class="sr-only">Go to NCSU ACM's GitHub repo</span>
+      <Icon name="mdi:github" width="32" height="32" />
+    </a>
+  </div>
+</footer>
+<style>
+  footer {
+    padding: 2em 1em 6em 1em;
+    background: linear-gradient(var(--gray-gradient)) no-repeat;
+    color: rgb(var(--gray));
+    text-align: center;
+  }
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 0.3em;
+    margin-top: 1em;
+  }
+  .social-links a {
+    text-decoration: none;
+    color: rgb(var(--gray));
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .social-links a:hover {
+    color: rgb(var(--gray-dark));
+    transform: translateY(-5px);
+  }
+</style>
