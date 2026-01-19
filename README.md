@@ -12,7 +12,6 @@ Before getting started, you'll need:
 1. **Clone the repository**
 ```bash
    git clone https://github.com/ACM-NCSU/ACM-NCSU.github.io.git
-   cd acm_ncs
 ```
 
 2. **Install dependencies**
