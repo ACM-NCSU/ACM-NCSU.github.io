@@ -11,8 +11,8 @@ Before getting started, you'll need:
 
 1. **Clone the repository**
 ```bash
-   git clone https://github.com/nick-Sutton/acm_ncsu.git
-   cd acm_ncsu
+   git clone https://github.com/ACM-NCSU/ACM-NCSU.github.io.git
+   cd acm_ncs
 ```
 
 2. **Install dependencies**
@@ -37,10 +37,6 @@ We welcome any and all contributions! A great place to start is browsing the cur
 1. **Fork the repository** to your own GitHub account
 
 2. **Clone your fork**
-```bash
-   git clone https://github.com/YOUR-USERNAME/acm_ncsu.git
-   cd acm_ncsu
-```
 
 3. **Create a feature branch**
 ```bash
