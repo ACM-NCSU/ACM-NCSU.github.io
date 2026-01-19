@@ -7,6 +7,7 @@ import { Icon } from 'astro-icon/components';
 import thinkingImg from '../assets/headshots/thinking.jpg';
 
 import cooperImage from '../assets/headshots/cooper.png'
+import noraImage from '../assets/headshots/nora.jpg'
 import nickImage from '../assets/headshots/nwsutton.jpg'
 import titusImg from '../assets/headshots/ktitus.jpg'
 import gawedaImg from '../assets/headshots/agaweda.jpg'
@@ -79,7 +80,7 @@ const executiveBoard = [
         gradYear: "Spring 2027",
         major: "B.S. Computer Science",
         minor: "Global Leadership & Team Decision-Making, Music Studies",
-        image: thinkingImg,
+        image: noraImage,
         links: {
             website: null,
             linkedin: "https://www.linkedin.com/in/noranhc/",
@@ -112,10 +113,10 @@ const executiveBoard = [
         image: nickImage,
         links: {
             website: "https://nick-sutton.github.io/",
-            linkedin: null,
-            github: null
+            linkedin: "www.linkedin.com/in/nwsutton",
+            github: "https://github.com/nick-Sutton"
         },
-        bio: "Hello, I'm Nick! My academic interests include Robotics, Software Systems, and Programming Languages. My favorite languages are Rust, Julia, and C. Outside of academics, I enjoy cooking, sculpting, building scale models, playing bass guitar, and gaming—Elden Ring and Minecraft are some of my favorites."
+        bio: "Hello, I'm Nick! My academic interests include Robotics, Software Systems, and Programming Languages. My favorite languages are Rust, Julia, and C. Outside of academics, I enjoy cooking, sculpting, building scale models, playing bass guitar, and gaming."
     },
 ];
 
@@ -131,10 +132,10 @@ const facultyAdvisors = [
         image: titusImg,
         links: {
             website: "https://csc.ncsu.edu/people/kjtitus3/",
-            linkedin: "www.linkedin.com/in/nwsutton",
-            github: "https://github.com/nick-Sutton"
+            linkedin: null,
+            github: null
         },
-        bio: null
+        bio: "Kimberly Titus is an associate teaching professor in the Department of Computer Science at NC State University. She teaches a range of undergraduate courses and is committed to supporting student success in both in-person and online learning environments."
     },
     {
         name: "Dr. Adam Gaweda",
@@ -150,7 +151,7 @@ const facultyAdvisors = [
             linkedin: null,
             github: null
         },
-        bio: null
+        bio: "Dr. Gaweda is an assistant teaching professor in the Department of Computer Science at NC State University. He. focuses his efforts into Phospædia (“light learning”) and hemisphere synchronization to study CS education, Brain-Computer Interfaces, and Internet Addiction."
     },
 ];
 
@@ -546,6 +547,7 @@ const facultyAdvisors = [
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        justify-content: center;
     }
 
     .modal-member-image {
@@ -571,8 +573,8 @@ const facultyAdvisors = [
     }
 
     .member-social-links a:hover {
-        color: var(--wolfpack-red);
-        transform: translateY(-5px);
+        color: #333;
+        transform: translateY(-3px);
     }
 
     .modal-member-info {
