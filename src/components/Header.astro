@@ -5,6 +5,14 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
+
+		<button class="hamburger">
+			<!--Span burger-->
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+
 		<div class="internal-links">
 			<HeaderLink href="/about">About</HeaderLink>
 			<HeaderLink href="/events">Events</HeaderLink>
@@ -23,6 +31,71 @@ header {
 	box-shadow: 0 2px 8px rgba(var(--black), 5%);
 }
 
+/* By default doesn't display if screen is big enough*/
+.hamburger {
+	display: none;
+	flex-direction: column;
+	gap: 5px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.5em;
+	border-radius: 4px;
+}
+
+.hamburger:hover {
+	background: rgba(var(--gray-light), 0.6);
+}
+
+.hamburger span {
+	width: 25px;
+	height: 3px;
+	background: rgb(var(--black));
+	border-radius: 2px;
+	transition: background 0.15s ease;
+}
+
+.hamburger:hover span {
+	background: var(--wolfpack-red);
+}
+
+/*For devices that have a width at 768px or lower*/
+/*replace navbar with hamburger icon.*/
+@media (max-width: 768px) {
+	.hamburger {
+		display: flex;
+	}
+
+	.internal-links {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: white;
+		border-top: 2px solid var(--wolfpack-red);
+		box-shadow: 0 4px 12px rgba(var(--gray), 25%);
+		padding: 0.25em 0;
+		animation: fadeIn 0.15s ease;
+	}
+
+	/* The nav bars are now shown in a dropdown*/
+	.internal-links.open {
+		display: flex;
+	}
+
+	.internal-links a {
+		padding: 0.75em 1.5em;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.internal-links a:hover {
+		background: rgba(204, 0, 0, 0.05);
+	}
+}
+
 h2 {
 	margin: 0;
 	font-size: 1em;
@@ -38,5 +111,17 @@ nav {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
 }
 </style>
+
+<script>
+	// Get hamburger button and the nav bar links
+	const hamburger = document.querySelector('.hamburger');
+	const navLinks = document.querySelector('.internal-links');
+
+	// Whenever the hamburger button is clicked, toggle the 'open' class
+	hamburger?.addEventListener('click', () => {
+		navLinks?.classList.toggle('open');
+	})
+</script>

@@ -35,9 +35,9 @@ We welcome any and all contributions! A great place to start is browsing the cur
 
 1. **Fork the repository** to your own GitHub account
 
-2. **Clone your fork**
+2. **Clone your fork and add the original repo as an upstream remote**
 
-3. **Create a feature branch**
+3. **Create a feature branch from your fork**
 ```bash
    git checkout -b feature/your-feature-name
 ```
