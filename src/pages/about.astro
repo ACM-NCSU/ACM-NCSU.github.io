@@ -417,10 +417,12 @@ const facultyAdvisors = [
 
     .member-image {
         width: 100%;
-        height: 250px;
+		height: auto;
+        max-height: 250px;
         object-fit: contain;
         object-position: center;
         background: #f0f0f0;
+		display: block;
     }
 
     .member-info {
@@ -554,7 +556,8 @@ const facultyAdvisors = [
 
     .modal-member-image {
         width: 280px;
-        height: 350px;
+		height: auto;
+        max-height: 350px;
         object-fit: contain;
         object-position: center;
         border-radius: 8px;
