@@ -234,7 +234,7 @@ const facultyAdvisors = [
         <div data-member-index={index} data-member-type="executive">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`}/>
                     <div class="member-social-links">
                         {member.links.website && (
                             <a href={member.links.website} target="_blank" rel="noopener noreferrer">
@@ -276,7 +276,7 @@ const facultyAdvisors = [
         <div data-member-index={index} data-member-type="faculty">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`}/>
                     <div class="member-social-links">
                         {member.links.website && (
                             <a href={member.links.website} target="_blank" rel="noopener noreferrer">
@@ -673,5 +673,10 @@ const facultyAdvisors = [
         .modal-member-info h1 {
             font-size: 1.5rem;
         }
-    }
+
+		.logo-image {
+		    width: 200px;
+		    height: auto;
+		    object-fit: contain;
+		}
 </style>
