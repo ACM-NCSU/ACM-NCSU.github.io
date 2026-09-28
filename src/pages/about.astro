@@ -8,7 +8,7 @@ import defaultImg from '../assets/logos/acm_ncsu_small.png';
 
 import cooperImage from '../assets/headshots/Cooper.jpeg'
 import noraImage from '../assets/headshots/nora.jpg'
-import johnImage from '../assets/headshots/john.png'
+
 import snigdhaImage from '../assets/headshots/Snigdha.jpg'
 import titusImg from '../assets/headshots/ktitus.jpg'
 import gawedaImg from '../assets/headshots/agaweda.jpg'
@@ -37,6 +37,7 @@ const executiveBoard = [
         major: "B.S. Computer Science",
         minor: "Business Administration",
         image: cooperImage,
+        imageStyle: "object-fit: cover; object-position: center;",
         links: {
             website: null,
             linkedin: "https://linkedin.com/in/cooper-sizemore",
@@ -90,27 +91,13 @@ const executiveBoard = [
         bio: "Hi, I'm Nora! I like bringing people together and making cool stuff happen. Professionally, I'm interested in systems and software engineering. In my free time, I enjoy listening to music, watching video essays, and writing about my thoughts."
     },
     {
-        name: "John Nguyen",
-        pronouns: "he/him",
-        title: "Head of Advertising",
-        gradYear: "Spring 2027",
-        major: "M.S. Computer Science",
-        minor: null,
-        image: johnImage,
-        links: {
-            website: null,
-            linkedin: "https://www.linkedin.com/in/john-nguyen-62058319b/",
-            github: null
-        },
-        bio: "Hello! I am a trad irish musician that occasionally rock climbs. I religiously hunt down and play in irish sessions all around the triangle and I dabble in music composition!"
-    },
-    {
         name: "Snigdha Challpalli",
         pronouns: "her/she",
         title: "Tech Committee Lead",
         gradYear: "Spring 2027",
         major: "M.S. Computer Science",
         image: snigdhaImage,
+        imageStyle: "object-fit: cover; object-position: center;",
         links: {
             website: null,
             linkedin: "https://www.linkedin.com/in/snigdha-challapalli",
@@ -188,15 +175,20 @@ const facultyAdvisors = [
     
     <h3 class="subsection-title">Executive Board</h3>
     <div class="board-grid">
-        {executiveBoard.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="executive">
-                <img src={member.image.src} alt={member.name} class="member-image" />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
+    {executiveBoard.map((member, index) => (
+        <button class="member-card" data-member-index={index} data-member-type="executive">
+            <img 
+                src={member.image.src} 
+                alt={member.name} 
+                class="member-image" 
+                style={member.imageStyle || ''} 
+            />
+            <div class="member-info">
+                <h3 class="member-name">{member.name}</h3>
+                <div class="member-title">{member.title}</div>
+            </div>
+        </button>
+    ))}
     </div>
 
     <h2 class="subsection-title">Faculty Advisors</h2>
@@ -232,7 +224,7 @@ const facultyAdvisors = [
         <div data-member-index={index} data-member-type="executive">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`}/>
+                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} style={member.imageStyle || ''}/>
                     <div class="member-social-links">
                         {member.links.website && (
                             <a href={member.links.website} target="_blank" rel="noopener noreferrer">
