@@ -20,14 +20,13 @@ const pastEvents = allEvents
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 // Format date helper
-function formatDate(date: Date, endDate?: Date) {
+function formatDate(date: Date, endDate?: Date, dateOnly = false) {
     const formatter = new Intl.DateTimeFormat('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        timeZone: 'America/New_York'
+        ...(dateOnly ? {} : { hour: 'numeric' as const, minute: '2-digit' as const }),
+        timeZone: dateOnly ? 'UTC' : 'America/New_York'
     });
     
     const timeFormatter = new Intl.DateTimeFormat('en-US', {
@@ -42,15 +41,14 @@ function formatDate(date: Date, endDate?: Date) {
     return formatter.format(date);
 }
 
-function formatLongDate(date: Date, endDate?: Date) {
+function formatLongDate(date: Date, endDate?: Date, dateOnly = false) {
     const formatter = new Intl.DateTimeFormat('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
         year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        timeZone: 'America/New_York'
+        ...(dateOnly ? {} : { hour: 'numeric' as const, minute: '2-digit' as const }),
+        timeZone: dateOnly ? 'UTC' : 'America/New_York'
     });
     
     const timeFormatter = new Intl.DateTimeFormat('en-US', {
@@ -92,7 +90,7 @@ const eventContents = await Promise.all(
                                 </div>
                                 <div class="event-content">
                                     <h3>{event.data.title}</h3>
-                                    <p class="event-date">{formatDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined)}</p>
+                                    <p class="event-date">{formatDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined, event.data.dateOnly)}</p>
                                     {event.data.location && (
                                         <p class="event-location">{event.data.location}</p>
                                     )}
@@ -116,7 +114,7 @@ const eventContents = await Promise.all(
                                 </div>
                                 <div class="event-content">
                                     <h3>{event.data.title}</h3>
-                                    <p class="event-date">{formatDate(new Date(event.data.date))}</p>
+                                    <p class="event-date">{formatDate(new Date(event.data.date), undefined, event.data.dateOnly)}</p>
                                     {event.data.location && (
                                         <p class="event-location">{event.data.location}</p>
                                     )}
@@ -150,7 +148,7 @@ const eventContents = await Promise.all(
                         <div class="modal-text-content">
                             <h1>{event.data.title}</h1>
                             <div class="event-meta">
-                                <p class="event-date">{formatLongDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined)}</p>
+                                <p class="event-date">{formatLongDate(new Date(event.data.date), event.data.endDate ? new Date(event.data.endDate) : undefined, event.data.dateOnly)}</p>
                                 {event.data.location && (
                                     <p class="event-location">📍 {event.data.location}</p>
                                 )}

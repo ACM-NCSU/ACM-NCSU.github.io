@@ -5,6 +5,7 @@ const events = defineCollection({
     schema: ({ image }) => z.object({
         title: z.string(),
         date: z.coerce.date(),
+        dateOnly: z.boolean().optional(),
         endDate: z.coerce.date().optional(),
         image: image(), 
         location: z.string().optional(),
