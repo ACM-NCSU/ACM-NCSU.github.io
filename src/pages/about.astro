@@ -6,33 +6,20 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { Icon } from 'astro-icon/components';
 import defaultImg from '../assets/logos/acm_ncsu_small.png';
 
-import cooperImage from '../assets/headshots/cooper.png'
+import cooperImage from '../assets/headshots/Cooper.jpeg'
 import noraImage from '../assets/headshots/nora.jpg'
-import johnImage from '../assets/headshots/john.png'
-import nickImage from '../assets/headshots/nwsutton.jpg'
+import ayushImage from '../assets/headshots/Ayush.jpg'
+import vihanImage from '../assets/headshots/Vihan.jpg'
+import mahekImage from '../assets/headshots/Mahek.jpeg'
+import snigdhaImage from '../assets/headshots/Snigdha.jpg'
 import titusImg from '../assets/headshots/ktitus.jpg'
 import gawedaImg from '../assets/headshots/agaweda.jpg'
 
 const executiveBoard = [
     {
-        name: "Cooper Sizemore",
-        pronouns: "he/him",
-        title: "President",
-        gradYear: "Spring 2027",
-        major: "B.S. Computer Science",
-        minor: "Business Administration",
-        image: cooperImage,
-        links: {
-            website: null,
-            linkedin: "https://www.linkedin.com/in/cooper-sizemore/",
-            github: "https://github.com/coopersizemore"
-        },
-        bio: "I'm Cooper, a motivated CSC student with a passion for solving hard problems and helping others. I love listening to new music, cooking, and playing games with friends."
-    },
-    {
         name: "Kerneep Sandhu",
         pronouns: "he/him",
-        title: "Vice President",
+        title: "President",
         gradYear: "Fall 2026",
         major: "B.S. Computer Science",
         minor: null,
@@ -43,6 +30,22 @@ const executiveBoard = [
             github: null
         },
         bio: "Hi yall, I'm Kerneep. I like talking to people, and planning events. Outside of coursework, you will usually find me reading comics or watching YouTube, or doing something else other than coursework. "
+    },
+    {
+        name: "Cooper Sizemore",
+        pronouns: "he/him",
+        title: "Vice President",
+        gradYear: "Spring 2027",
+        major: "B.S. Computer Science",
+        minor: "Business Administration",
+        image: cooperImage,
+        imageStyle: "object-fit: cover; object-position: center;",
+        links: {
+            website: null,
+            linkedin: "https://linkedin.com/in/cooper-sizemore",
+            github: "https://github.com/coopersizemore"
+        },
+        bio: "I'm Cooper, a motivated CSC student with a passion for solving hard problems and helping others. I love listening to new music, cooking, and playing games with friends."
     },
     {
         name: "Cole Hincken",
@@ -57,22 +60,22 @@ const executiveBoard = [
             linkedin: "https://www.linkedin.com/in/cole-hincken/",
             github: "https://github.com/Shneagan"
         },
-        bio: ""
+        bio: "Hi! I'm cole"
     },
     {
-        name: "Nidhi Grover",
+        name: "Mahek Viradiya",
         pronouns: "she/her",
         title: "Treasurer",
-        gradYear: "Spring 2026",
-        major: "B.S. Computer Science",
-        minor: "Statistics",
-        image: defaultImg,
+        gradYear: "Spring 2027",
+        major: "M.S. Computer Science",
+        image: mahekImage,
+        imageStyle: "object-fit: cover; object-position: center;",
         links: {
             website: null,
-            linkedin: "https://www.linkedin.com/in/nidhi-grover2026/",
-            github: null
+            linkedin: "https://www.linkedin.com/in/mahek-viradiya",
+            github: "https://github.com/mahek390"
         },
-        bio: "Hi everyone, Nidhi here! Glad to be part of ACM NCSU as the Treasurer. I'm excited to pursue a career at the intersection of Data Science, AI and Machine Learning. Outside of academics, you will usually find me reading, drawing, watching TV shows/movies or talking about cats :)"
+        bio: null
     },
     {
         name: "Nora Cam",
@@ -90,34 +93,46 @@ const executiveBoard = [
         bio: "Hi, I'm Nora! I like bringing people together and making cool stuff happen. Professionally, I'm interested in systems and software engineering. In my free time, I enjoy listening to music, watching video essays, and writing about my thoughts."
     },
     {
-        name: "John Nguyen",
-        pronouns: "he/him",
-        title: "Head of Advertising",
+        name: "Snigdha Challpalli",
+        pronouns: "her/she",
+        title: "Tech Committee Lead",
         gradYear: "Spring 2027",
         major: "M.S. Computer Science",
-        minor: null,
-        image: johnImage,
+        image: snigdhaImage,
+        imageStyle: "object-fit: cover; object-position: center;",
         links: {
             website: null,
-            linkedin: "https://www.linkedin.com/in/john-nguyen-62058319b/",
+            linkedin: "https://www.linkedin.com/in/snigdha-challapalli",
             github: null
         },
-        bio: "Hello! I am a trad irish musician that occasionally rock climbs. I religiously hunt down and play in irish sessions all around the triangle and I dabble in music composition!"
     },
     {
-        name: "Nicholas Sutton",
-        pronouns: "he/they",
-        title: "Webmaster",
-        gradYear: "Spring 2027",
+        name: "Ayush Prakash",
+        pronouns: "he/him",
+        title: "Project Committee Lead",
+        gradYear: "Spring 2028",
         major: "B.S. Computer Science",
-        minor: "Mathematics",
-        image: nickImage,
+        image: ayushImage,
+        imageStyle: "object-fit: cover; object-position: center;",
         links: {
-            website: "https://nick-sutton.github.io/",
-            linkedin: "www.linkedin.com/in/nwsutton",
-            github: "https://github.com/nick-Sutton"
+            website: null,
+            linkedin: "https://linkedin.com/in/ayushprakash012",
+            github: null
         },
-        bio: "Hello, I'm Nick! My academic interests include Robotics, Software Systems, and Programming Languages. My favorite languages are Rust, Julia, and C. Outside of academics, I enjoy cooking, sculpting, building scale models, playing bass guitar, and gaming."
+    },
+    {
+        name: "Vihan Singh",
+        pronouns: "he/him",
+        title: "Media Committee Lead",
+        gradYear: "Spring 2029",
+        major: "B.S. Computer Science",
+        image: vihanImage,
+        imageStyle: "object-fit: cover; object-position: center top;",
+        links: {
+            website: null,
+            linkedin: "https://www.linkedin.com/in/vihans19/",
+            github: "https://github.com/Vsbs14"
+        },
     },
 ];
 
@@ -190,15 +205,20 @@ const facultyAdvisors = [
     
     <h3 class="subsection-title">Executive Board</h3>
     <div class="board-grid">
-        {executiveBoard.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="executive">
-                <img src={member.image.src} alt={member.name} class="member-image" />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
+    {executiveBoard.map((member, index) => (
+        <button class="member-card" data-member-index={index} data-member-type="executive">
+            <img 
+                src={member.image.src} 
+                alt={member.name} 
+                class="member-image" 
+                style={member.imageStyle || ''} 
+            />
+            <div class="member-info">
+                <h3 class="member-name">{member.name}</h3>
+                <div class="member-title">{member.title}</div>
+            </div>
+        </button>
+    ))}
     </div>
 
     <h2 class="subsection-title">Faculty Advisors</h2>
@@ -234,7 +254,7 @@ const facultyAdvisors = [
         <div data-member-index={index} data-member-type="executive">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} style={member.imageStyle || ''}/>
                     <div class="member-social-links">
                         {member.links.website && (
                             <a href={member.links.website} target="_blank" rel="noopener noreferrer">
@@ -276,7 +296,7 @@ const facultyAdvisors = [
         <div data-member-index={index} data-member-type="faculty">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class="modal-member-image" />
+                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`}/>
                     <div class="member-social-links">
                         {member.links.website && (
                             <a href={member.links.website} target="_blank" rel="noopener noreferrer">
@@ -417,10 +437,10 @@ const facultyAdvisors = [
 
     .member-image {
         width: 100%;
-        height: 250px;
-        object-fit: cover;
-        object-position: center;
-        background: #f0f0f0;
+	    aspect-ratio: 1 / 1;
+	    object-fit: contain;
+	    object-position: center;
+	    background: #f0f0f0;
     }
 
     .member-info {
@@ -544,22 +564,23 @@ const facultyAdvisors = [
     }
 
     .modal-member-image-container {
-        flex-shrink: 0;
-        width: 280px;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        justify-content: center;
-    }
+	  flex-shrink: 0;
+	  width: 280px;
+	  aspect-ratio: 1 / 1;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	}
+	
+	.modal-member-image {
+	  width: 100%;
+	  height: 100%;     
+	  object-fit: contain;
+	  object-position: center;
+	  border-radius: 8px;
+	  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
 
-    .modal-member-image {
-        width: 280px;
-        height: 350px;
-        object-fit: cover;
-        object-position: center;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
 
     .member-social-links {
         display: flex;
@@ -656,19 +677,28 @@ const facultyAdvisors = [
             padding: 1.5rem;
         }
 
-        .modal-member-image-container {
-            width: 100%;
-            align-items: center;
-        }
-
-        .modal-member-image {
-            width: 100%;
-            max-width: 280px;
-            height: 350px;
-        }
+        @media (max-width: 768px) {
+		  .modal-member-image-container {
+			width: 100%;
+			max-width: 280px;
+			aspect-ratio: 1 / 1;
+			align-items: center;
+		  }
+		
+		  .modal-member-image {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		  }
+		}
 
         .modal-member-info h1 {
             font-size: 1.5rem;
         }
-    }
+
+		.logo-image {
+		    width: 200px;
+		    height: 200px;
+		    object-fit: cover;
+		}
 </style>
