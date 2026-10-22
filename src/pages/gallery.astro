@@ -1,0 +1,122 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const events = [
+  {
+    title: 'ACM Interest Meeting',
+    date: 'August 27, 2026',
+    photos: [
+      { src: '/images/gallery/interest-meeting-3.jpg', alt: 'Students eating pizza and talking at the ACM interest meeting' },
+      { src: '/images/gallery/interest-meeting-4.jpg', alt: 'Students mingling around the pizza table at the ACM interest meeting' },
+      { src: '/images/gallery/interest-meeting-6.jpg', alt: 'Students chatting over food at the ACM interest meeting' },
+    ],
+  },
+  {
+    title: 'Direct Supply AI Workshop',
+    date: 'September 24, 2026',
+    photos: [
+      { src: '/images/gallery/direct-supply-1.jpg', alt: 'Students with laptops and pizza listening to the Direct Supply AI workshop' },
+      { src: '/images/gallery/direct-supply-6.jpg', alt: 'Direct Supply presenters explaining their slides at the AI workshop' },
+      { src: '/images/gallery/direct-supply-3.jpg', alt: 'Wide view of the lecture hall during the Direct Supply AI workshop' },
+      { src: '/images/gallery/direct-supply-10.jpg', alt: 'The three Direct Supply presenters at the front of the room' },
+      { src: '/images/gallery/direct-supply-8.jpg', alt: 'Students following along on laptops as Direct Supply presents' },
+    ],
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Gallery | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h2>Gallery</h2>
+			<p>A look at some of our past events.</p>
+
+			{events.map((event) => (
+				<section class="gallery-event">
+					<h3>{event.title}</h3>
+					<p class="event-date">{event.date}</p>
+					<div class="gallery-grid">
+						{event.photos.map((photo) => (
+							<figure>
+								<img src={photo.src} alt={photo.alt} loading="lazy" />
+							</figure>
+						))}
+					</div>
+				</section>
+			))}
+
+			<dialog id="lightbox"><img id="lightbox-img" alt="" /></dialog>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.gallery-event {
+		margin-bottom: 2.5rem;
+	}
+	.event-date {
+		color: gray;
+		margin-top: -0.5rem;
+	}
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+	.gallery-grid figure {
+		margin: 0;
+	}
+	.gallery-grid img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 6px;
+		cursor: zoom-in;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+	.gallery-grid img:hover {
+		transform: scale(1.02);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+	#lightbox {
+		padding: 0;
+		border: none;
+		background: transparent;
+		max-width: 90vw;
+	}
+	#lightbox img {
+		display: block;
+		max-width: 90vw;
+		max-height: 85vh;
+		border-radius: 6px;
+	}
+	#lightbox::backdrop {
+		background: rgba(0, 0, 0, 0.8);
+	}
+</style>
+
+<script>
+	const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+	const bigImg = document.getElementById('lightbox-img') as HTMLImageElement;
+
+	// Clicking a thumbnail opens it full size
+	document.querySelectorAll<HTMLImageElement>('.gallery-grid img').forEach((img) => {
+		img.addEventListener('click', () => {
+			bigImg.src = img.src;
+			bigImg.alt = img.alt;
+			dialog.showModal();
+		});
+	});
+
+	// Clicking anywhere closes it (Esc also works)
+	dialog.addEventListener('click', () => dialog.close());
+</script>
