@@ -305,7 +305,7 @@ const projectManagers = [
             github: null
         },
         bio: null
-    },
+    }
 ];
 
 const projectCommittee = [
@@ -565,7 +565,7 @@ const mediaCommittee = [
     <h3 class="subsection-title">Project Committee Members</h3>
     <div class="board-grid">
         {projectCommittee.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="project">
+            <button class="member-card" data-member-index={index} data-member-type="project-c">
                 <img 
                     src={member.image.src} 
                     alt={member.name} 
@@ -810,7 +810,7 @@ const mediaCommittee = [
         </div>
     ))}
     {projectCommittee.map((member, index) => (
-        <div data-member-index={index} data-member-type="project">
+        <div data-member-index={index} data-member-type="project-c">
             <div class="modal-member-layout">
                 <div class="modal-member-image-container">
                     <img 
