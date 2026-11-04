@@ -6,14 +6,16 @@ import HeaderLink from './HeaderLink.astro';
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 
-		<button class="hamburger">
+		<button class="hamburger" type="button" 
+		aria-label="Navigation menu" aria-expanded="false"
+		aria-controls="mobile-navigation">
 			<!--Span burger-->
 			<span></span>
 			<span></span>
 			<span></span>
 		</button>
 
-		<div class="internal-links">
+		<div class="internal-links" id="mobile-navigation">
 			<HeaderLink href="/about">About</HeaderLink>
 			<HeaderLink href="/events">Events</HeaderLink>
 			<HeaderLink href="/calendar">Calendar</HeaderLink>
@@ -117,12 +119,14 @@ nav {
 </style>
 
 <script>
-	// Get hamburger button and the nav bar links
-	const hamburger = document.querySelector('.hamburger');
-	const navLinks = document.querySelector('.internal-links');
+    // Get the hamburger button and navigation links
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.internal-links');
 
-	// Whenever the hamburger button is clicked, toggle the 'open' class
-	hamburger?.addEventListener('click', () => {
-		navLinks?.classList.toggle('open');
-	})
+    // Toggle the menu and update its accessibility state
+    hamburger?.addEventListener('click', () => {
+        const isOpen = navLinks?.classList.toggle('open') ?? false;
+
+        hamburger.setAttribute('aria-expanded', String(isOpen));
+    });
 </script>
