@@ -1,43 +1,168 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import SiteLayout from '../pages/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
+
+const discordUrl = 'https://discord.gg/5DzjFzhgGT';
+const membershipUrl = 'https://getinvolved.ncsu.edu/organization/acm-ncsu';
+
+const committees = [
+  {
+    name: 'Event Planning Committee',
+    text: 'Organizes and carries out ACM at NCSU events.',
+  },
+  {
+    name: 'Finance Committee',
+    text: 'Manages the budget and finances for ACM at NCSU.',
+  },
+  {
+    name: 'Media Committee',
+    text: 'Promotes our organization to the broader community.',
+  },
+  {
+    name: 'Project Committee',
+    text: 'Manages projects and initiatives within ACM at NCSU.',
+  },
+  {
+    name: 'Tech Committee',
+    text: 'Maintains and develops the software used by our organization.',
+  },
+];
 ---
 
+<SiteLayout
+  title={`Get Involved | ${SITE_TITLE}`}
+  description="Ways to get involved with ACM at NC State: attend events, join the Discord, become a member, or apply to a committee."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Get involved with ACM at NCSU</span>
+      <h1>Find your <span class="accent">place.</span></h1>
+      <p class="lede">
+        Thank you for your interest! Joining ACM at NC State is a great way to
+        strengthen your connection with our student community, faculty, and tech professionals across the Triangle.
+      </p>
+    </div>
+  </section>
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-            <h2>Get Involved with ACM at NCSU</h2>
-            <p>
-				Thank you for your interest! Joining ACM at NC State is a great way to 
-				strengthen your connection with our student community, faculty, and tech professionals across the Triangle.
-            </p>
-			<h3>For Students</h3>
-			<p>
-				The easiest way to get involved in ACM at NCSU is to come to our events. We recommend joining the <a href="https://discord.gg/5DzjFzhgGT">Discord</a> to get updates
-				on our upcoming events. If you would like to become an official member you can visit our <a href="https://getinvolved.ncsu.edu/organization/acm-ncsu">Get Involved</a> page.
-			</p>
-			<p>
-				If you are interested in taking an active role in ACM at NCSU operations, you are welcome to apply to one of our committees at the beginning of each semester. 
-				These committees include the Event Planning Committee, which organizes and carries out ACM at NCSU events; the Advertising Committee, which promotes our 
-				organization to the broader community; and the Technology Committee, which maintains and develops the software used by our organization.
+  <section class="page-section">
+    <div class="wrap">
+      <div class="page-section-head reveal">
+        <span class="eyebrow">For students</span>
+        <h2 class="section-title">Start wherever you're comfortable.</h2>
+      </div>
 
-				<!-- Add Information about committees later -->
-			</p>
+      <div class="steps">
+        <article class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Come to an event</h3>
+          <p>The easiest way to get involved in ACM at NCSU is to come to our events.</p>
+          <a class="step-link" href="/events/">See events <span aria-hidden="true">→</span></a>
+        </article>
 
-			<!-- Figure out sponsor information
-            <h3>For Organizers</h3>
-			<p>
-			</p>-->
+        <article class="step reveal">
+          <span class="step-num">02</span>
+          <h3>Join the Discord</h3>
+          <p>We recommend joining the Discord to get updates on our upcoming events.</p>
+          <a class="step-link" href={discordUrl} target="_blank" rel="noopener noreferrer">Open Discord <span aria-hidden="true">↗</span></a>
+        </article>
 
-		</main>
-		<Footer />
-	</body>
-</html>
+        <article class="step reveal">
+          <span class="step-num">03</span>
+          <h3>Become an official member</h3>
+          <p>If you would like to become an official member you can visit our Get Involved page.</p>
+          <a class="step-link" href={membershipUrl} target="_blank" rel="noopener noreferrer">Get Involved page <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+
+      <article class="committee-panel reveal">
+        <div class="committee-intro">
+          <span class="eyebrow">Take an active role</span>
+          <h3>Apply to a committee</h3>
+          <p>
+            If you are interested in taking an active role in ACM at NCSU operations, you are welcome to
+            apply to one of our committees at the beginning of each semester.
+          </p>
+        </div>
+
+        <ul class="committee-list">
+          {committees.map((committee) => (
+            <li>
+              <strong>{committee.name}</strong>
+              <span>{committee.text}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      {/*
+        Figure out sponsor information
+        <h3>For Organizers</h3>
+      */}
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 44px; }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .step-num { color: var(--red-bright); font-family: var(--mono); font-size: .8rem; }
+
+  .step h3 {
+    margin: 40px 0 12px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -.01em;
+  }
+  .step p { margin: 0; color: var(--muted); }
+
+  .step-link {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: 28px;
+    color: var(--paper);
+    font-size: .95rem;
+    font-weight: 600;
+  }
+  .step-link span { display: inline-block; color: var(--red-bright); transition: transform .2s ease; }
+  .step-link:hover span { transform: translateX(3px); }
+
+  .committee-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 40px clamp(36px, 6vw, 88px);
+    margin-top: clamp(64px, 8vw, 104px);
+    padding-top: 40px;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .committee-intro h3 {
+    margin: 16px 0 14px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+    line-height: .98;
+    letter-spacing: -.02em;
+  }
+  .committee-intro p { margin: 0; max-width: 460px; color: var(--muted); }
+
+  .committee-list { margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--line); }
+  .committee-list li { display: grid; gap: 2px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .committee-list strong { font-size: 1.1rem; font-weight: 600; }
+  .committee-list span { color: var(--muted); font-size: .95rem; }
+
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr; gap: 40px; }
+    .step h3 { margin-top: 22px; }
+    .step-link { padding-top: 18px; }
+    .committee-panel { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,248 +1,135 @@
 ---
 import { Icon } from 'astro-icon/components';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import SiteLayout from '../pages/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
+
+const panels = [
+  {
+    title: 'CSC at NCSU',
+    icon: 'mdi:school-outline',
+    links: [
+      { label: 'Computer Science Course Catalog', href: 'https://catalog.ncsu.edu/course-descriptions/csc' },
+      { label: 'Undergraduate Special Topics Courses', href: 'https://my.csc.ncsu.edu/undergrad-advising/csc-undergraduate-restricted-electives/' },
+      { label: 'Graduate Special Topics Courses', href: 'https://my.csc.ncsu.edu/undergrad-advising/graduate-special-topics/' },
+      { label: 'Academic Success Center', href: 'https://asc.dasa.ncsu.edu/' },
+    ],
+  },
+  {
+    title: 'CSC Community',
+    icon: 'mdi:account-group-outline',
+    links: [
+      { label: 'CSC Student Organizations', href: 'https://csc.ncsu.edu/academics/student-organizations/' },
+      { label: 'CSC Discord', href: 'https://discord.gg/mmccuDpk' },
+      { label: 'Hack_NCState', href: 'https://hackncstate.org/' },
+      { label: 'CSC News & Events', href: 'https://csc.ncsu.edu/news/' },
+    ],
+  },
+  {
+    title: 'Career & Internships',
+    icon: 'mdi:briefcase-outline',
+    links: [
+      { label: 'CSC ePartners', href: 'https://csc.ncsu.edu/corporate-relations/become/current/' },
+      { label: 'NCSU ePack', href: 'https://careers.ncsu.edu/students/explore-jobs-and-internships/' },
+      { label: 'Career Fairs', href: 'https://careers.dasa.ncsu.edu/gain-experience/career-fairs/' },
+      { label: 'Career Development Center', href: 'https://careers.dasa.ncsu.edu/' },
+    ],
+  },
+  {
+    title: 'Research',
+    icon: 'mdi:graph-outline',
+    links: [
+      { label: 'CSC Research Areas', href: 'https://csc.ncsu.edu/research/' },
+      { label: 'Research Labs and Groups', href: 'https://csc.ncsu.edu/research/centers-and-labs/' },
+      { label: 'Faculty Directory', href: 'https://csc.ncsu.edu/group/faculty/professors/' },
+      { label: 'Undergraduate Research Courses', href: 'https://csc.ncsu.edu/academics/undergrad/undergraduate-research-or-independent-study/' },
+      { label: 'NSF REU Programs', href: 'https://www.nsf.gov/funding/initiatives/reu' },
+    ],
+  },
+];
 ---
 
-<!doctype html>
-<html lang="en">
-<head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-</head>
-<body>
-<Header />
-<main class="resources-content">
-    <h2>Resources</h2>
-    <p class="intro-text">
-        Everything you need to succeed in computer science at NC State, from coursework 
+<SiteLayout
+  title={`Resources | ${SITE_TITLE}`}
+  description="Courses, community, career, and research resources for computer science students at NC State."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Useful links</span>
+      <h1>Your next <span class="accent">rabbit hole.</span></h1>
+      <p class="lede">
+        Everything you need to succeed in computer science at NC State, from coursework
         to career preparation and research opportunities.
-    </p>
-
-    <div class="resources-grid">
-        <!-- CSC at NCSU Panel -->
-        <div class="resource-panel">
-            <div class="panel-header">
-                <Icon name="mdi:school-outline" class="header-icon" />
-                <h2>CSC at NCSU</h2>
-            </div>
-            <div class="panel-content">
-				<ul>
-					<li><a href="https://catalog.ncsu.edu/course-descriptions/csc" target="_blank">Computer Science Course Catalog</a></li>
-                    <li><a href="https://my.csc.ncsu.edu/undergrad-advising/csc-undergraduate-restricted-electives/" target="_blank">Undergraduate Special Topics Courses</a></li>
-                    <li><a href="https://my.csc.ncsu.edu/undergrad-advising/graduate-special-topics/" target="_blank">Graduate Special Topics Courses</a></li>
-                    <li><a href="https://asc.dasa.ncsu.edu/" target="_blank">Academic Success Center</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- CSC Community Panel -->
-        <div class="resource-panel">
-            <div class="panel-header">
-                <Icon name="mdi:account-group-outline" class="header-icon" />
-                <h2>CSC Community</h2>
-            </div>
-            <div class="panel-content">
-                <ul>
-                    <li><a href="https://csc.ncsu.edu/academics/student-organizations/" target="_blank">CSC Student Organizations</a></li>
-                    <li><a href="https://discord.gg/mmccuDpk" target="_blank">CSC Discord</a></li>
-					<li><a href="https://hackncstate.org/" target="_blank">Hack_NCState</a></li>
-					<li><a href="https://csc.ncsu.edu/news/" target="_blank">CSC News & Events</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Career & Internships Panel -->
-        <div class="resource-panel">
-            <div class="panel-header">
-                <Icon name="mdi:briefcase-outline" class="header-icon" />
-                <h2>Career & Internships</h2>
-            </div>
-            <div class="panel-content">
-                <ul>
-                    <li><a href="https://csc.ncsu.edu/corporate-relations/become/current/" target="_blank">CSC ePartners</a></li>
-                    <li><a href="https://careers.ncsu.edu/students/explore-jobs-and-internships/" target="_blank">NCSU ePack</a></li>
-                    <li><a href="https://careers.dasa.ncsu.edu/gain-experience/career-fairs/" target="_blank">Career Fairs</a></li>
-                    <li><a href="https://careers.dasa.ncsu.edu/" target="_blank">Career Development Center</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Research Opportunities Panel -->
-        <div class="resource-panel">
-            <div class="panel-header">
-                <Icon name="mdi:graph-outline" class="header-icon" />
-                <h2>Research</h2>
-            </div>
-            <div class="panel-content">
-                <ul>
-                    <li><a href="https://csc.ncsu.edu/research/" target="_blank">CSC Research Areas</a></li>
-                    <li><a href="https://csc.ncsu.edu/research/centers-and-labs/" target="_blank">Research Labs and Groups</a></li>
-                    <li><a href="https://csc.ncsu.edu/group/faculty/professors/" target="_blank">Faculty Directory</a></li>
-                    <li><a href="https://csc.ncsu.edu/academics/undergrad/undergraduate-research-or-independent-study/" target="_blank">Undergraduate Research Courses</a></li>
-                    <li><a href="https://www.nsf.gov/funding/initiatives/reu" target="_blank">NSF REU Programs</a></li>
-                </ul>
-            </div>
-        </div>
+      </p>
     </div>
-</main>
-<Footer />
-</body>
-</html>
+  </section>
+
+  <section class="page-section">
+    <div class="wrap">
+      <div class="resources-grid">
+        {panels.map((panel) => (
+          <article class="resource-panel reveal">
+            <header class="panel-header">
+              <span class="panel-icon"><Icon name={panel.icon} /></span>
+              <h2>{panel.title}</h2>
+            </header>
+            <ul class="panel-links">
+              {panel.links.map((link) => (
+                <li>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    <span>{link.label}</span>
+                    <span class="arrow" aria-hidden="true">↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</SiteLayout>
 
 <style>
-    .resources-content {
-        max-width: 1200px;
-        width: auto;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 64px clamp(36px, 6vw, 88px);
+    align-items: start;
+  }
 
-    .resources-content h1 {
-        color: var(--wolfpack-red);
-        margin-bottom: 1rem;
-        font-size: 2.5rem;
-    }
+  .resource-panel { border-top: 1px solid var(--line-strong); }
 
-    .intro-text {
-        font-size: 1.1rem;
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 3rem;
-        max-width: 800px;
-    }
+  .panel-header { display: flex; align-items: center; gap: 14px; padding: 24px 0 18px; }
 
-    .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-bottom: 4rem;
-    }
+  .panel-header h2 {
+    margin: 0;
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    line-height: 1;
+  }
 
-    .resource-panel {
-        background: white;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    }
+  .panel-icon { display: grid; place-items: center; flex-shrink: 0; color: var(--red-bright); }
+  .panel-icon :global(svg) { width: 24px; height: 24px; }
 
-    .resource-panel:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-color: #ccc;
-    }
+  .panel-links { margin: 0; padding: 0; list-style: none; }
 
-    .panel-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid #e0e0e0;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
+  .panel-links li { border-top: 1px solid var(--line); }
+  .panel-links li:last-child { border-bottom: 1px solid var(--line); }
 
-    .header-icon {
-        width: 2rem;
-        height: 2rem;
-        color: var(--wolfpack-red);
-        flex-shrink: 0;
-    }
+  .panel-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 15px 0;
+    color: #d8d2c9;
+    transition: padding-left .2s ease, color .2s ease;
+  }
+  .panel-links a:hover { padding-left: 10px; color: var(--paper); }
 
-    .panel-header h2 {
-        margin: 0;
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: #333;
-    }
+  .arrow { color: var(--red-bright); transition: transform .2s ease; }
+  .panel-links a:hover .arrow { transform: translate(2px, -2px); }
 
-    .panel-content {
-        padding: 1.5rem;
-    }
-
-    .panel-content p {
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 1.25rem;
-        font-size: 0.95rem;
-    }
-
-    .panel-content ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .panel-content li {
-        margin-bottom: 0.5rem;
-    }
-
-    .panel-content a {
-        color: #333;
-        text-decoration: none;
-        display: inline-block;
-        padding: 0.25rem 0;
-        transition: color 0.2s ease;
-        font-size: 0.95rem;
-    }
-
-    .panel-content a:hover {
-        color: var(--wolfpack-red);
-    }
-
-    .links-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-    }
-
-    .link-category h3 {
-        color: #333;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--wolfpack-red);
-    }
-
-    .link-category ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .link-category li {
-        margin-bottom: 0.5rem;
-    }
-
-    .link-category a {
-        color: #555;
-        text-decoration: none;
-        transition: color 0.2s ease;
-        font-size: 0.95rem;
-    }
-
-    .link-category a:hover {
-        color: var(--wolfpack-red);
-        text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-        .resources-content {
-            padding: 1rem;
-        }
-
-        .resources-content h1 {
-            font-size: 2rem;
-        }
-
-        .resources-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .links-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-    }
+  @media (max-width: 800px) {
+    .resources-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
 </style>

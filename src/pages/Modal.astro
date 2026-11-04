@@ -1,0 +1,158 @@
+---
+/**
+ * Shared dialog. Usage on a page:
+ *
+ *   <button data-modal-open="some-id">Open</button>
+ *   <div id="modal-data" hidden>
+ *     <div data-modal-id="some-id"> ...content... </div>
+ *   </div>
+ *   <Modal label="Event details" />
+ *
+ * On click the matching [data-modal-id] block is copied into the dialog.
+ * (A hidden <div> is used instead of <template> so astro-icon's <symbol> sprites stay in the live DOM.)
+ */
+interface Props {
+  label?: string;
+  maxWidth?: string;
+}
+
+const { label = 'Details', maxWidth = '900px' } = Astro.props;
+---
+
+<div id="site-modal" class="modal" role="dialog" aria-modal="true" aria-label={label} style={`--modal-max: ${maxWidth}`}>
+  <div class="modal-content">
+    <button class="modal-close" type="button" aria-label="Close dialog">&times;</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('site-modal');
+  const modalBody = document.getElementById('modal-body');
+  const modalContent = modal?.querySelector<HTMLElement>('.modal-content') ?? null;
+  const closeButton = modal?.querySelector<HTMLButtonElement>('.modal-close') ?? null;
+  let lastTrigger: HTMLElement | null = null;
+
+  function openModal(id: string, trigger: HTMLElement) {
+    const source = Array.from(document.querySelectorAll<HTMLElement>('#modal-data [data-modal-id]'))
+      .find((el) => el.dataset.modalId === id);
+    if (!modal || !modalBody || !source) return;
+
+    modalBody.innerHTML = source.innerHTML;
+    lastTrigger = trigger;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    modalContent?.scrollTo(0, 0);
+    closeButton?.focus();
+  }
+
+  function closeModal() {
+    if (!modal?.classList.contains('active')) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    lastTrigger?.focus();
+    lastTrigger = null;
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const trigger = target.closest<HTMLElement>('[data-modal-open]');
+
+    if (trigger) {
+      openModal(trigger.dataset.modalOpen ?? '', trigger);
+    } else if (target === modal || target.closest('.modal-close')) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!modal?.classList.contains('active')) return;
+
+    if (event.key === 'Escape') {
+      closeModal();
+      return;
+    }
+
+    // Keep keyboard focus inside the dialog while it is open.
+    if (event.key === 'Tab') {
+      const focusable = Array.from(
+        modal.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+      );
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || !modal.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !modal.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+</script>
+
+<style is:global>
+  body.site .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    padding: 24px;
+    overflow: auto;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,9,8,.82);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  body.site .modal.active { display: flex; animation: modalFade .25s ease; }
+
+  body.site .modal-content {
+    position: relative;
+    width: 100%;
+    max-width: var(--modal-max, 900px);
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: var(--bg-2);
+    box-shadow: 0 40px 120px rgba(0,0,0,.6);
+    animation: modalSlide .3s ease;
+  }
+
+  body.site .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0 0 3px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgba(15,14,13,.8);
+    color: var(--paper);
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+  }
+
+  body.site .modal-close:hover { background: var(--paper); color: var(--bg); border-color: var(--paper); }
+
+  @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalSlide { from { transform: translateY(-28px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  @media (max-width: 768px) {
+    body.site .modal { padding: 12px; }
+    body.site .modal-content { max-height: 94vh; }
+  }
+</style>

@@ -1,9 +1,10 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
+import SiteLayout from '../pages/SiteLayout.astro';
+import Modal from '../pages/Modal.astro';
+import { SITE_TITLE } from '../consts';
 import defaultImg from '../assets/logos/acm_ncsu_small.png';
 
 import cooperImage from '../assets/headshots/Cooper.jpeg'
@@ -31,26 +32,25 @@ import zanImage from '../assets/headshots/Zan.jpeg'
 import sajeethImage from '../assets/headshots/Sajeeth.jpeg'
 import karthikImage from '../assets/headshots/Karthik.jpeg'
 
-import saaiImage from '../assets/headshots/Saai.jpg'
-import varunImage from '../assets/headshots/Varun.jpeg'
-import saakethImage from '../assets/headshots/Saaketh.jpeg'
-import jeremiahImage from '../assets/headshots/Jeremiah.jpg'
+interface Member {
+    name: string;
+    pronouns?: string | null;
+    title: string;
+    department?: string;
+    gradYear?: string | null;
+    major?: string | null;
+    minor?: string | null;
+    image: ImageMetadata;
+    imageStyle?: string;
+    links?: {
+        website?: string | null;
+        linkedin?: string | null;
+        github?: string | null;
+    };
+    bio?: string | null;
+}
 
-import sameekshaImage from '../assets/headshots/Sameeksha.jpeg'
-import gloriaImage from '../assets/headshots/Gloria.jpeg'
-
-import sanjanaImage from '../assets/headshots/Sanjana.jpeg'
-import thomasImage from '../assets/headshots/Thomas.jpg'
-import danielImage from '../assets/headshots/Daniel.jpg'
-import ryanImage from '../assets/headshots/Ryan.jpeg'
-import zanImage from '../assets/headshots/Zan.jpeg'
-import sajeethImage from '../assets/headshots/Sajeeth.jpeg'
-import karthikImage from '../assets/headshots/Karthik.jpeg'
-import cindyImage from '../assets/headshots/Cindy.jpg'
-import prachiImage from '../assets/headshots/Prachi.jpeg'
-
-
-const executiveBoard = [
+const executiveBoard: Member[] = [
     {
         name: "Kerneep Sandhu",
         pronouns: "he/him",
@@ -171,7 +171,7 @@ const executiveBoard = [
     },
 ];
 
-const facultyAdvisors = [
+const facultyAdvisors: Member[] = [
     {
         name: "Dr. Kimberly Titus",
         pronouns: null,
@@ -206,14 +206,14 @@ const facultyAdvisors = [
     },
 ];
 
-const techCommittee = [
+const techCommittee: Member[] = [
     {
         name: "Saai Chander Prabhu",
         pronouns: "he/him",
         title: "Tech Committee Member",
         gradYear: "Spring 2029",
         major: "B.S. Computer Science",
-        minor: "Business Administration",
+        minor: null,
         image: saaiImage,
         imageStyle: "object-fit: cover; object-position: center;",
         links: {
@@ -273,7 +273,7 @@ const techCommittee = [
     },
 ];
 
-const projectManagers = [
+const projectManagers: Member[] = [
     {
         name: "Sameeksha Keshav",
         pronouns: "she/her",
@@ -305,10 +305,10 @@ const projectManagers = [
             github: null
         },
         bio: null
-    }
+    },
 ];
 
-const projectCommittee = [
+const projectCommittee: Member[] = [
     {
         name: "Sanjana Shetty",
         pronouns: "she/her",
@@ -423,900 +423,301 @@ const projectCommittee = [
     },
 ];
 
+// Every group gets its own id, which becomes part of each card's modal key
+// (e.g. "managers-0" vs "project-0"), so two groups can never open each other's dialog.
+const sections = [
+    { id: 'executive', title: 'Executive Board', members: executiveBoard },
+    { id: 'faculty', title: 'Faculty Advisors', members: facultyAdvisors },
+    { id: 'tech', title: 'Tech Committee Members', members: techCommittee },
+    { id: 'managers', title: 'Project Managers', members: projectManagers },
+    { id: 'project', title: 'Project Committee Members', members: projectCommittee },
+];
 
-const eventCommittee = [
+const socialLinks = (member: Member) =>
+    [
+        { label: 'website', icon: 'mdi:web', href: member.links?.website },
+        { label: 'LinkedIn', icon: 'mdi:linkedin', href: member.links?.linkedin },
+        { label: 'GitHub', icon: 'mdi:github', href: member.links?.github },
+    ].filter((link) => link.href);
+
+const modalKey = (sectionId: string, index: number) => `${sectionId}-${index}`;
+
+const mission = [
     {
-        name: "Cindy Lopez Hernandez",
-        pronouns: "she/her",
-        title: "Events Committee Member",
-        gradYear: "Spring 2028",
-        major: "B.S. Computer Science",
-        minor: null,
-        image: cindyImage,
-        imageStyle: "object-fit: cover; object-position: center;",
-        links: {
-            website: null,
-            linkedin: "https://www.linkedin.com/in/cinlopezh/",
-            github: null
-        },
-        bio: null
-
-    }
-]
-
-const mediaCommittee = [
+        label: 'Inclusive by design',
+        text: "We're dedicated to building an inclusive community of computing students, academics, and professionals at NC State. Students and faculty from any discipline with an interest in computing are welcome to attend ACM at NCSU events and join us in fostering curiosity in the computational sciences.",
+    },
     {
-        name: "Prachi Jani",
-        pronouns: "she/her",
-        title: "Media Committee Member",
-        gradYear: "Spring 2030",
-        major: "B.S. Computer Science",
-        minor: null,
-        image: prachiImage,
-        imageStyle: "object-fit: cover; object-position: center;",
-        links: {
-            website: null,
-            linkedin: "https://www.linkedin.com/in/prachi-jani-992b49418/",
-            github: null
-        },
-        bio: null
-    }
-]
-
+        label: 'Growth at every stage',
+        text: 'We focus on introducing new students to the breadth of computer science while helping upperclassmen advance their careers through networking events, skill-building workshops, and internship connections.',
+    },
+    {
+        label: 'Show up and meet people',
+        text: "You can get involved in ACM at NCSU by attending our variety of events, including socials, educational talks, and industry networking sessions. At these events, you'll meet a diverse group of students passionate about computing, along with professors and industry leaders.",
+    },
+];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-</head>
-<body>
-<Header />
-<main class="about-content">
-    <h2>About Us</h2>
-    <p>
-        ACM at NCSU is the student chapter of the <a href="https://www.acm.org/" target="_blank">Association for Computing Machinery</a> at North Carolina State University.
+
+<SiteLayout
+  title={`About | ${SITE_TITLE}`}
+  description="ACM at NC State is the student chapter of the Association for Computing Machinery. Meet our leadership, committees, and faculty advisors."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">About us</span>
+      <h1>Who we <span class="accent">are.</span></h1>
+      <p class="lede">
+        ACM at NCSU is the student chapter of the Association for Computing Machinery at North Carolina State University.
         ACM is the world's largest educational and scientific computing organization.
-    </p>
-    <p>
-        We're dedicated to building an inclusive community of computing students, academics, and professionals
-        at NC State. Students and faculty from any discipline with an interest in computing are welcome to 
-        attend ACM at NCSU events and join us in fostering curiosity in the computational sciences.
-    </p>
-    <p>
-        We focus on introducing new students to the breadth of computer science while helping upperclassmen advance 
-        their careers through networking events, skill-building workshops, and internship connections.
-    </p>
-    <p>
-        You can get involved in ACM at NCSU by attending our variety of
-        events, including socials, educational talks, and industry networking sessions.
-        At these events, you'll meet a diverse group of students passionate about
-        computing, along with professors and industry leaders.
-    </p>
-
-    <h2>Leadership</h2>
-    
-    <h3 class="subsection-title">Executive Board</h3>
-    <div class="board-grid">
-    {executiveBoard.map((member, index) => (
-        <button class="member-card" data-member-index={index} data-member-type="executive">
-            <img 
-                src={member.image.src} 
-                alt={member.name} 
-                class="member-image" 
-                style={member.imageStyle || ''} 
-            />
-            <div class="member-info">
-                <h3 class="member-name">{member.name}</h3>
-                <div class="member-title">{member.title}</div>
-            </div>
-        </button>
-    ))}
+      </p>
     </div>
+  </section>
 
-    <h2 class="subsection-title">Faculty Advisors</h2>
-    <div class="board-grid">
-        {facultyAdvisors.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="faculty">
-                <img src={member.image.src} alt={member.name} class="member-image" />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
+  <section class="page-section">
+    <div class="wrap">
+      <div class="mission-grid">
+        {mission.map((item) => (
+          <article class="mission-card reveal">
+            <span class="eyebrow">{item.label}</span>
+            <p>{item.text}</p>
+          </article>
         ))}
+      </div>
     </div>
+  </section>
 
-    <h3 class="subsection-title">Tech Committee Members</h3>
-    <div class="board-grid">
-        {techCommittee.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="tech">
-                <img 
-                    src={member.image.src} 
-                    alt={member.name} 
-                    class="member-image" 
-                    style={member.imageStyle || ''} 
+  <section class="page-section" id="leadership">
+    <div class="wrap">
+      <div class="page-section-head reveal">
+        <span class="eyebrow">The people behind ACM</span>
+        <h2 class="section-title">Leadership</h2>
+      </div>
+
+      {sections.map((section) => (
+        <div class="member-group" id={section.id}>
+          <h3 class="group-title">{section.title}</h3>
+          <div class="board-grid">
+            {section.members.map((member, index) => (
+              <button type="button" class="member-card" data-modal-open={modalKey(section.id, index)}>
+                <div class:list={['member-photo', { 'is-logo': member.image === defaultImg }]}>
+                  <Image
+                    src={member.image}
+                    alt=""
+                    width={480}
+                    style={member.imageStyle || undefined}
+                  />
+                </div>
+                <div class="member-info">
+                  <h4 class="member-name">{member.name}</h4>
+                  <div class="member-title">{member.title}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Add Sponsor Section here */}
+    </div>
+  </section>
+
+  <Modal label="Member details" maxWidth="900px" />
+
+  <!-- Hidden member data; copied into the dialog when a card is clicked -->
+  <div id="modal-data" hidden>
+    {sections.map((section) =>
+      section.members.map((member, index) => (
+        <div data-modal-id={modalKey(section.id, index)}>
+          <div class="modal-member-layout">
+            <div class="modal-member-image-container">
+              <div class:list={['modal-photo', { 'is-logo': member.image === defaultImg }]}>
+                <Image
+                  src={member.image}
+                  alt={`Photo of ${member.name}`}
+                  width={640}
+                  style={member.imageStyle || undefined}
                 />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
-    </div>
-
-    <h3 class="subsection-title">Project Managers</h3>
-    <div class="board-grid">
-        {projectManagers.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="project">
-                <img 
-                    src={member.image.src} 
-                    alt={member.name} 
-                    class="member-image" 
-                    style={member.imageStyle || ''} 
-                />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
-    </div>
-
-    <h3 class="subsection-title">Project Committee Members</h3>
-    <div class="board-grid">
-        {projectCommittee.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="project-c">
-                <img 
-                    src={member.image.src} 
-                    alt={member.name} 
-                    class="member-image" 
-                    style={member.imageStyle || ''} 
-                />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
-    </div>
-
-    <h3 class="subsection-title">Event Committee Members</h3>
-    <div class="board-grid">
-        {eventCommittee.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="event">
-                <img 
-                    src={member.image.src} 
-                    alt={member.name} 
-                    class="member-image" 
-                    style={member.imageStyle || ''} 
-                />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
-    </div>
-
-
-    <h3 class="subsection-title">Media Committee Members</h3>
-    <div class="board-grid">
-        {mediaCommittee.map((member, index) => (
-            <button class="member-card" data-member-index={index} data-member-type="media">
-                <img 
-                    src={member.image.src} 
-                    alt={member.name} 
-                    class="member-image" 
-                    style={member.imageStyle || ''} 
-                />
-                <div class="member-info">
-                    <h3 class="member-name">{member.name}</h3>
-                    <div class="member-title">{member.title}</div>
-                </div>
-            </button>
-        ))}
-    </div>
-
-	<!-- Add Sponsor Section here -->
-	<!-- <h1 class="section-title">Sponsors</h1> -->
-</main>
-
-<!-- Modal -->
-<div id="member-modal" class="modal">
-    <div class="modal-content">
-        <button class="modal-close" aria-label="Close modal">&times;</button>
-        <div id="modal-body">
-            <!-- Member content will be loaded here -->
-        </div>
-    </div>
-</div>
-
-<!-- Hidden member data -->
-<div id="member-data" style="display: none;">
-    {executiveBoard.map((member, index) => (
-        <div data-member-index={index} data-member-type="executive">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} style={member.imageStyle || ''}/>
-                    <div class="member-social-links">
-                        {member.links.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
+              </div>
+              <div class="member-social-links">
+                {socialLinks(member).map((link) => (
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    <span class="sr-only">Visit {member.name}'s {link.label}</span>
+                    <Icon name={link.icon} width="28" height="28" />
+                  </a>
+                ))}
+              </div>
             </div>
-        </div>
-    ))}
-    {facultyAdvisors.map((member, index) => (
-        <div data-member-index={index} data-member-type="faculty">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img src={member.image.src} alt={member.name} class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`}/>
-                    <div class="member-social-links">
-                        {member.links.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Department:</strong> {member.department}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
+
+            <div class="modal-member-info">
+              <h2>{member.name}</h2>
+              {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
+              <p class="member-role">{member.title}</p>
+
+              <dl class="member-details-list">
+                {member.department ? (
+                  <div><dt>Department</dt><dd>{member.department}</dd></div>
+                ) : (
+                  <>
+                    {member.major && <div><dt>Major</dt><dd>{member.major}</dd></div>}
+                    {member.minor && <div><dt>Minor</dt><dd>{member.minor}</dd></div>}
+                    {member.gradYear && <div><dt>Graduation</dt><dd>{member.gradYear}</dd></div>}
+                  </>
+                )}
+              </dl>
+
+              {member.bio && <p class="member-bio">{member.bio}</p>}
             </div>
+          </div>
         </div>
-    ))}
-    {techCommittee.map((member, index) => (
-        <div data-member-index={index} data-member-type="tech">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img 
-                        src={member.image?.src || defaultImg.src} 
-                        alt={member.name} 
-                        class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} 
-                        style={member.imageStyle || ''}
-                    />
-                    <div class="member-social-links">
-                        {member.links?.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
-    {projectManagers.map((member, index) => (
-        <div data-member-index={index} data-member-type="project">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img 
-                        src={member.image?.src || defaultImg.src} 
-                        alt={member.name} 
-                        class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} 
-                        style={member.imageStyle || ''}
-                    />
-                    <div class="member-social-links">
-                        {member.links?.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
-    {projectCommittee.map((member, index) => (
-        <div data-member-index={index} data-member-type="project-c">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img 
-                        src={member.image?.src || defaultImg.src} 
-                        alt={member.name} 
-                        class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} 
-                        style={member.imageStyle || ''}
-                    />
-                    <div class="member-social-links">
-                        {member.links?.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
-    {eventCommittee.map((member, index) => (
-        <div data-member-index={index} data-member-type="event">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img 
-                        src={member.image?.src || defaultImg.src} 
-                        alt={member.name} 
-                        class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} 
-                        style={member.imageStyle || ''}
-                    />
-                    <div class="member-social-links">
-                        {member.links?.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
-    {mediaCommittee.map((member, index) => (
-        <div data-member-index={index} data-member-type="media">
-            <div class="modal-member-layout">
-                <div class="modal-member-image-container">
-                    <img 
-                        src={member.image?.src || defaultImg.src} 
-                        alt={member.name} 
-                        class={`modal-member-image ${member.image === defaultImg ? "logo-image" : ""}`} 
-                        style={member.imageStyle || ''}
-                    />
-                    <div class="member-social-links">
-                        {member.links?.website && (
-                            <a href={member.links.website} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s website</span>
-                                <Icon name="mdi:web" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.linkedin && (
-                            <a href={member.links.linkedin} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s LinkedIn</span>
-                                <Icon name="mdi:linkedin" width="32" height="32" />
-                            </a>
-                        )}
-                        {member.links?.github && (
-                            <a href={member.links.github} target="_blank" rel="noopener noreferrer">
-                                <span class="sr-only">Visit {member.name}'s GitHub</span>
-                                <Icon name="mdi:github" width="32" height="32" />
-                            </a>
-                        )}
-                    </div>
-                </div>
-                <div class="modal-member-info">
-                    <h1>{member.name}</h1>
-                    {member.pronouns && <p class="member-pronouns">{member.pronouns}</p>}
-                    <p class="member-role">{member.title}</p>
-                    <div class="member-details-list">
-                        <p><strong>Major:</strong> {member.major}</p>
-                        {member.minor && <p><strong>Minor:</strong> {member.minor}</p>}
-                        <p><strong>Graduation:</strong> {member.gradYear}</p>
-                    </div>
-                    <div class="member-bio">
-                        <p>{member.bio}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
-</div>
-
-<Footer />
-</body>
-</html>
-
-<script>
-    const modal = document.getElementById('member-modal');
-    const modalBody = document.getElementById('modal-body');
-    const modalClose = document.querySelector('.modal-close');
-    const memberCards = document.querySelectorAll('.member-card');
-    const memberData = document.getElementById('member-data');
-
-    // Open modal when member card is clicked
-    memberCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const index = card.getAttribute('data-member-index');
-            const type = card.getAttribute('data-member-type');
-            const memberContent = memberData?.querySelector(`[data-member-index="${index}"][data-member-type="${type}"]`);
-            
-            if (memberContent && modalBody) {
-                modalBody.innerHTML = memberContent.innerHTML;
-                modal?.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-
-    // Close modal
-    function closeModal() {
-        modal?.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    modalClose?.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside
-    modal?.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal?.classList.contains('active')) {
-            closeModal();
-        }
-    });
-</script>
+      ))
+    )}
+  </div>
+</SiteLayout>
 
 <style>
-    .about-content {
-        max-width: 800px;
-        width: auto;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+  .mission-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 44px;
+  }
 
-    .about-content p {
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-    }
+  .mission-card { padding-top: 22px; border-top: 1px solid var(--line-strong); }
+  .mission-card p { margin: 22px 0 0; color: var(--muted); }
 
-    .about-content a {
-        color: var(--wolfpack-red);
-        text-decoration: none;
-    }
+  .member-group { margin-top: 72px; }
 
-    .about-content a:hover {
-        text-decoration: underline;
-    }
+  .group-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 28px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: .76rem;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+  .group-title::before { content: ""; width: 7px; height: 7px; background: var(--red-bright); }
+  .group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-    .board-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1.5rem;
-        margin: 2rem 0;
-        max-width: 1200px;
-    }
+  .board-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 36px 22px;
+  }
 
-    .member-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        text-decoration: none;
-        color: inherit;
-        display: block;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        text-align: left;
-        width: 100%;
-        max-width: 300px;
-    }
+  .member-card {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
 
-    .member-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-    }
+  .member-photo,
+  .modal-photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #211e1b;
+  }
 
-    .member-image {
-        width: 100%;
-	    aspect-ratio: 1 / 1;
-	    object-fit: contain;
-	    object-position: center;
-	    background: #f0f0f0;
-    }
+  /* Photos fill the frame unless a member sets their own object-fit/position inline. */
+  .member-photo :global(img),
+  .modal-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 0;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform .5s ease;
+  }
+  .member-card:hover .member-photo :global(img) { transform: scale(1.04); }
 
-    .member-info {
-        padding: 1rem;
-    }
+  /* The chapter logo stands in for members without a photo; keep it whole on a light tile. */
+  .member-photo.is-logo,
+  .modal-photo.is-logo { background: #ecebea; }
+  .member-photo.is-logo :global(img),
+  .modal-photo.is-logo :global(img) { object-fit: contain; object-position: center; padding: 16%; }
 
-    .member-name {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin: 0 0 0.25rem 0;
-        color: #333;
-    }
+  .member-info { padding: 14px 0 0; }
 
-    .member-title {
-        color: var(--wolfpack-red);
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin-bottom: 0;
-    }
+  .member-name {
+    margin: 0 0 4px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    transition: color .2s ease;
+  }
+  .member-card:hover .member-name { color: var(--red-bright); }
 
-    .section-title {
-        font-size: 2rem;
-        margin: 3rem 0 1rem 0;
-        color: #333;
-    }
+  .member-title {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .06em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
 
-    .subsection-title {
-        font-size: 1.5rem;
-        margin: 2rem 0 1rem 0;
-        color: #666;
-    }
+  /* ---------- Modal content (copied in from #modal-data) ---------- */
+  .modal-member-layout { display: flex; gap: 36px; padding: 36px; }
+  .modal-member-image-container { flex-shrink: 0; width: 280px; }
 
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
+  .member-social-links { display: flex; gap: 6px; margin-top: 14px; }
 
-    /* Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        overflow: auto;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+  .member-social-links a {
+    display: inline-flex;
+    padding: 8px;
+    border-radius: 10px;
+    color: var(--muted);
+    transition: color .2s ease, background-color .2s ease;
+  }
+  .member-social-links a:hover { color: var(--paper); background: rgba(243,238,230,.08); }
 
-    .modal.active {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 1;
-    }
+  .modal-member-info { flex: 1; min-width: 0; padding-right: 28px; }
 
-    .modal-content {
-        background-color: white;
-        margin: 2rem;
-        padding: 0;
-        border-radius: 12px;
-        max-width: 900px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-        animation: slideIn 0.3s ease;
-    }
+  .modal-member-info h2 {
+    margin: 0 0 6px;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    line-height: 1;
+  }
 
-    @keyframes slideIn {
-        from {
-            transform: translateY(-50px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
+  .member-pronouns { margin: 0 0 12px; color: var(--muted); font-style: italic; }
+  .member-role {
+    margin: 0 0 24px;
+    color: var(--red-bright);
+    font-family: var(--mono);
+    font-size: .8rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
 
-    .modal-close {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #333;
-        background: white;
-        border: none;
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background-color 0.2s ease;
-        z-index: 10;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
+  .member-details-list { margin: 0 0 24px; border-top: 1px solid var(--line); }
+  .member-details-list div { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .member-details-list dt { flex: 0 0 120px; color: var(--faint); font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding-top: 3px; }
+  .member-details-list dd { margin: 0; color: var(--paper); }
 
-    .modal-close:hover {
-        background-color: var(--wolfpack-red);
-        color: white;
-    }
+  .member-bio { margin: 0; color: #d8d2c9; line-height: 1.8; }
 
-    .modal-member-layout {
-        display: flex;
-        gap: 2rem;
-        padding: 2rem;
-    }
+  @media (max-width: 900px) {
+    .mission-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
 
-    .modal-member-image-container {
-	  flex-shrink: 0;
-	  width: 280px;
-	  aspect-ratio: 1 / 1;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	}
-	
-	.modal-member-image {
-	  width: 100%;
-	  height: 100%;     
-	  object-fit: contain;
-	  object-position: center;
-	  border-radius: 8px;
-	  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	}
+  @media (max-width: 768px) {
+    .board-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 28px 14px; }
 
-
-    .member-social-links {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    .member-social-links a {
-        text-decoration: none;
-        color: #666;
-        display: inline-block;
-        transition: transform 0.3s ease, color 0.3s ease;
-    }
-
-    .member-social-links a:hover {
-        color: #333;
-        transform: translateY(-3px);
-    }
-
-    .modal-member-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .modal-member-info h1 {
-        margin: 0 0 0.25rem 0;
-        font-size: 2rem;
-        color: #333;
-    }
-
-    .member-pronouns {
-        color: #666;
-        font-size: 1rem;
-        font-style: italic;
-        margin: 0 0 0.75rem 0;
-    }
-
-    .member-role {
-        color: var(--wolfpack-red);
-        font-weight: 600;
-        font-size: 1.2rem;
-        margin: 0 0 1.5rem 0;
-    }
-
-    .member-details-list {
-        background-color: #f5f5f5;
-        padding: 1.25rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-    }
-
-    .member-details-list p {
-        margin: 0.5rem 0;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .member-details-list strong {
-        color: #333;
-    }
-
-    .member-bio {
-        line-height: 1.8;
-        color: #444;
-    }
-
-    .member-bio p {
-        margin: 0;
-    }
-
-    @media (max-width: 1200px) {
-        .board-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        }
-    }
-
-    @media (max-width: 768px) {
-        .board-grid {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            justify-items: center;
-        }
-
-        .member-card {
-            max-width: 250px;
-        }
-
-        .modal-content {
-            margin: 1rem;
-            max-height: 95vh;
-        }
-
-        .modal-member-layout {
-            flex-direction: column;
-            padding: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-		  .modal-member-image-container {
-			width: 100%;
-			max-width: 280px;
-			aspect-ratio: 1 / 1;
-			align-items: center;
-		  }
-		
-		  .modal-member-image {
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-		  }
-		}
-
-        .modal-member-info h1 {
-            font-size: 1.5rem;
-        }
-
-		.logo-image {
-		    width: 200px;
-		    height: 200px;
-		    object-fit: cover;
-		}
+    .modal-member-layout { flex-direction: column; align-items: center; gap: 22px; padding: 24px; }
+    .modal-member-image-container { width: 100%; max-width: 280px; }
+    .modal-member-info { width: 100%; padding-right: 0; }
+    .member-details-list div { flex-direction: column; gap: 2px; }
+    .member-details-list dt { flex-basis: auto; }
+  }
 </style>

@@ -1,28 +1,68 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import SiteLayout from '../pages/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
+
+const calendarEmbed =
+  'https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FNew_York&showPrint=0&bgcolor=%23ffffff&src=YWNtLm5jc3VAZ21haWwuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039be5&color=%230b8043';
+
+// "Add to Google Calendar" link for the ACM calendar (same calendar id as the embed above).
+const subscribeUrl = 'https://calendar.google.com/calendar/u/0?cid=YWNtLm5jc3VAZ21haWwuY29t';
 ---
 
+<SiteLayout
+  title={`Calendar | ${SITE_TITLE}`}
+  description="Explore upcoming ACM at NC State events."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Never miss a meeting</span>
+      <h1>Mark your <span class="accent">calendar.</span></h1>
+      <p class="lede">See what's coming up at ACM at NC State.</p>
+      <div class="page-actions">
+        <a class="btn btn-primary" href={subscribeUrl} target="_blank" rel="noopener noreferrer">Add to Google Calendar ↗</a>
+        <a class="btn btn-secondary" href="/events/">Browse events →</a>
+      </div>
+    </div>
+  </section>
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h2>Calendar</h2>
-			<iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FNew_York&showPrint=0&src=YWNtLm5jc3VAZ21haWwuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039be5&color=%230b8043" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-		</main>
-		<Footer />
-	</body>
-</html>
+  <section class="page-section">
+    <div class="wrap">
+      <div class="calendar-frame reveal">
+        <iframe
+          src={calendarEmbed}
+          title="ACM at NC State Google Calendar"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
 
 <style>
-	iframe {
-		width:100%;
-	}
+  .calendar-frame {
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: var(--bg-2);
+    padding: 8px;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 650px;
+    border: 0;
+    border-radius: 4px;
+    /*
+      Google's embed only ships a light theme. Inverting it and rotating the hue back keeps
+      event colours roughly intact while matching the dark site. Delete this one line if you
+      would rather show the stock white calendar.
+    */
+    filter: invert(.92) hue-rotate(180deg);
+  }
+
+  @media (max-width: 600px) {
+    .calendar-frame { padding: 4px; }
+    iframe { height: 550px; }
+  }
 </style>

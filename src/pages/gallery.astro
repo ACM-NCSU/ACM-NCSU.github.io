@@ -1,122 +1,404 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import SiteLayout from '../pages/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
 
+// Add events/photos here. The ring and the grid below are both built from this list.
 const events = [
   {
-    title: 'ACM Interest Meeting',
+    name: 'ACM Interest Meeting',
     date: 'August 27, 2026',
     photos: [
-      { src: '/images/gallery/interest-meeting-3.jpg', alt: 'Students eating pizza and talking at the ACM interest meeting' },
-      { src: '/images/gallery/interest-meeting-4.jpg', alt: 'Students mingling around the pizza table at the ACM interest meeting' },
-      { src: '/images/gallery/interest-meeting-6.jpg', alt: 'Students chatting over food at the ACM interest meeting' },
+      { src: '/images/gallery/interest-meeting-3.jpg', alt: 'Students gathered at the ACM interest meeting' },
+      { src: '/images/gallery/interest-meeting-4.jpg', alt: 'Officers presenting at the ACM interest meeting' },
+      { src: '/images/gallery/interest-meeting-6.jpg', alt: 'Members chatting after the ACM interest meeting' },
     ],
   },
   {
-    title: 'Direct Supply AI Workshop',
+    name: 'Direct Supply AI Workshop',
     date: 'September 24, 2026',
     photos: [
-      { src: '/images/gallery/direct-supply-1.jpg', alt: 'Students with laptops and pizza listening to the Direct Supply AI workshop' },
-      { src: '/images/gallery/direct-supply-6.jpg', alt: 'Direct Supply presenters explaining their slides at the AI workshop' },
-      { src: '/images/gallery/direct-supply-3.jpg', alt: 'Wide view of the lecture hall during the Direct Supply AI workshop' },
-      { src: '/images/gallery/direct-supply-10.jpg', alt: 'The three Direct Supply presenters at the front of the room' },
-      { src: '/images/gallery/direct-supply-8.jpg', alt: 'Students following along on laptops as Direct Supply presents' },
+      { src: '/images/gallery/direct-supply-1.jpg', alt: 'Direct Supply engineers opening the AI workshop' },
+      { src: '/images/gallery/direct-supply-6.jpg', alt: 'Students working through the AI workshop exercises' },
+      { src: '/images/gallery/direct-supply-3.jpg', alt: 'Attendees listening during the Direct Supply workshop' },
+      { src: '/images/gallery/direct-supply-10.jpg', alt: 'A team collaborating at the AI workshop' },
+      { src: '/images/gallery/direct-supply-8.jpg', alt: 'Group photo at the Direct Supply AI workshop' },
     ],
   },
 ];
+
+// The 3D ring gets crowded past ~14 cards, so cap it; the grid below always shows everything.
+const ringPhotos = events
+  .flatMap((event) => event.photos.map((photo) => ({ ...photo, event: event.name })))
+  .slice(0, 14);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`Gallery | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h2>Gallery</h2>
-			<p>A look at some of our past events.</p>
+<SiteLayout
+  title={`Gallery | ${SITE_TITLE}`}
+  description="Photos from ACM at NC State events."
+>
+  <section class="page-hero gallery-hero">
+    <div class="wrap">
+      <span class="eyebrow">Moments from the Wolfpack</span>
+      <h1>Caught on <span class="accent">camera.</span></h1>
+      <p class="lede">Workshops, talks, and the people who make them happen.</p>
+    </div>
+  </section>
 
-			{events.map((event) => (
-				<section class="gallery-event">
-					<h3>{event.title}</h3>
-					<p class="event-date">{event.date}</p>
-					<div class="gallery-grid">
-						{event.photos.map((photo) => (
-							<figure>
-								<img src={photo.src} alt={photo.alt} loading="lazy" />
-							</figure>
-						))}
-					</div>
-				</section>
-			))}
+  <section class="ring-section" aria-label="Photo carousel" data-count={ringPhotos.length}>
+    <div class="stage" id="stage">
+      <div class="tilt">
+        <div class="ring" id="ring">
+          {ringPhotos.map((photo, i) => (
+            <button
+              type="button"
+              class="card"
+              data-index={i}
+              data-src={photo.src}
+              data-alt={photo.alt}
+              data-event={photo.event}
+              aria-label={`Enlarge photo: ${photo.alt}`}
+            >
+              <img src={photo.src} alt="" loading={i < 6 ? 'eager' : 'lazy'} draggable="false" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
 
-			<dialog id="lightbox"><img id="lightbox-img" alt="" /></dialog>
-		</main>
-		<Footer />
-	</body>
-</html>
+    <div class="ring-bar wrap">
+      <p class="ring-caption" id="ringCaption" aria-live="off">
+        <span class="cap-event" id="capEvent"></span>
+        <span class="cap-alt" id="capAlt"></span>
+      </p>
+      <div class="ring-controls">
+        <button type="button" class="ring-btn" id="ringToggle" aria-pressed="false">Pause</button>
+      </div>
+    </div>
+    <p class="ring-hint wrap">Drag to spin · click a photo to enlarge</p>
+  </section>
 
-<style>
-	.gallery-event {
-		margin-bottom: 2.5rem;
-	}
-	.event-date {
-		color: gray;
-		margin-top: -0.5rem;
-	}
-	.gallery-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-		gap: 1rem;
-	}
-	.gallery-grid figure {
-		margin: 0;
-	}
-	.gallery-grid img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		border-radius: 6px;
-		cursor: zoom-in;
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-	.gallery-grid img:hover {
-		transform: scale(1.02);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	}
-	#lightbox {
-		padding: 0;
-		border: none;
-		background: transparent;
-		max-width: 90vw;
-	}
-	#lightbox img {
-		display: block;
-		max-width: 90vw;
-		max-height: 85vh;
-		border-radius: 6px;
-	}
-	#lightbox::backdrop {
-		background: rgba(0, 0, 0, 0.8);
-	}
-</style>
+  <section class="page-section">
+    <div class="wrap">
+      <div class="page-section-head reveal">
+        <span class="eyebrow">Browse by event</span>
+        <h2 class="section-title">Every photo.</h2>
+      </div>
+
+      {events.map((event) => (
+        <div class="event-block">
+          <div class="event-block-head">
+            <h3>{event.name}</h3>
+            <span>{event.date}</span>
+          </div>
+          <div class="photo-grid">
+            {event.photos.map((photo) => (
+              <button type="button" class="photo" data-src={photo.src} data-alt={photo.alt} aria-label={`Enlarge photo: ${photo.alt}`}>
+                <img src={photo.src} alt={photo.alt} loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <dialog id="lightbox" aria-label="Photo viewer">
+    <button type="button" class="lb-close" id="lbClose" aria-label="Close photo">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </dialog>
+</SiteLayout>
 
 <script>
-	const dialog = document.getElementById('lightbox') as HTMLDialogElement;
-	const bigImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const ring = document.getElementById('ring') as HTMLElement;
+  const stage = document.getElementById('stage') as HTMLElement;
+  const cards = Array.from(ring.querySelectorAll<HTMLElement>('.card'));
+  const toggle = document.getElementById('ringToggle') as HTMLButtonElement;
+  const capEvent = document.getElementById('capEvent') as HTMLElement;
+  const capAlt = document.getElementById('capAlt') as HTMLElement;
+  const lightbox = document.getElementById('lightbox') as HTMLDialogElement;
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbClose = document.getElementById('lbClose') as HTMLButtonElement;
 
-	// Clicking a thumbnail opens it full size
-	document.querySelectorAll<HTMLImageElement>('.gallery-grid img').forEach((img) => {
-		img.addEventListener('click', () => {
-			bigImg.src = img.src;
-			bigImg.alt = img.alt;
-			dialog.showModal();
-		});
-	});
+  const N = cards.length;
+  const step = 360 / N;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-	// Clicking anywhere closes it (Esc also works)
-	dialog.addEventListener('click', () => dialog.close());
+  let angle = 0;              // current ring rotation in degrees
+  let speed = 9;              // degrees per second (one lap ≈ 40s)
+  let userPaused = reduceMotion.matches;
+  let dragging = false;
+  let lightboxOpen = false;
+  let last = performance.now();
+  let lastCaption = -1;
+  let radius = 0;
+
+  function layout() {
+    const cardW = cards[0].offsetWidth;
+    // Radius so neighbouring cards sit edge to edge, plus a gap so the ring reads as separate cards.
+    radius = Math.max(cardW * 0.8, (cardW * 1.5) / 2 / Math.tan(Math.PI / Math.max(N, 3)));
+    cards.forEach((card, i) => {
+      card.style.transform = `rotateY(${i * step}deg) translateZ(${radius}px)`;
+    });
+    stage.style.setProperty('--radius', `${radius}px`);
+  }
+
+  function setPaused(value: boolean) {
+    userPaused = value;
+    toggle.textContent = value ? 'Play' : 'Pause';
+    toggle.setAttribute('aria-pressed', String(value));
+  }
+
+  function frame(now: number) {
+    const dt = Math.min((now - last) / 1000, 0.1);
+    last = now;
+
+    if (!userPaused && !dragging && !lightboxOpen) angle -= speed * dt;
+
+    ring.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
+
+    let front = 0;
+    let best = -2;
+    cards.forEach((card, i) => {
+      // 1 when the card faces the viewer, -1 when it is on the far side.
+      const facing = Math.cos(((i * step + angle) * Math.PI) / 180);
+      const shade = 0.28 + 0.72 * Math.max(0, (facing + 0.25) / 1.25);
+      card.style.filter = `brightness(${shade.toFixed(3)})`;
+      if (facing > best) { best = facing; front = i; }
+    });
+
+    if (front !== lastCaption) {
+      lastCaption = front;
+      capEvent.textContent = cards[front].dataset.event ?? '';
+      capAlt.textContent = cards[front].dataset.alt ?? '';
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // ----- drag to spin -----
+  let startX = 0;
+  let startAngle = 0;
+  let moved = 0;
+
+  stage.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    moved = 0;
+    startX = e.clientX;
+    startAngle = angle;
+  });
+
+  stage.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    // Only capture the pointer once it is a real drag, otherwise the card never receives its click.
+    if (moved > 6 && !stage.hasPointerCapture(e.pointerId)) {
+      stage.setPointerCapture(e.pointerId);
+      stage.classList.add('is-dragging');
+    }
+    angle = startAngle + dx * 0.25;
+  });
+
+  const endDrag = (e: PointerEvent) => {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove('is-dragging');
+    if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+  };
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  // ----- lightbox -----
+  let opener: HTMLElement | null = null;
+
+  function openLightbox(src: string, alt: string, from: HTMLElement) {
+    opener = from;
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lightboxOpen = true;
+    lightbox.showModal();
+  }
+
+  lightbox.addEventListener('close', () => {
+    lightboxOpen = false;
+    opener?.focus();
+  });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target !== lbImg) lightbox.close();
+  });
+  lbClose.addEventListener('click', () => lightbox.close());
+
+  // Chromium can report the .tilt wrapper as the pointer target inside a preserve-3d tree, so mouse/touch taps
+  // are resolved with elementsFromPoint(); keyboard activation (detail === 0) still arrives on the card itself.
+  stage.addEventListener('click', (e) => {
+    if (e.detail !== 0 && moved > 6) return; // that was a drag, not a tap
+    const target = (e.target as HTMLElement).closest<HTMLElement>('.card');
+    const hit = e.detail === 0 && target ? target : document.elementsFromPoint(e.clientX, e.clientY)
+      .find((el): el is HTMLElement => el instanceof HTMLElement && el.classList.contains('card'));
+    if (hit) openLightbox(hit.dataset.src ?? '', hit.dataset.alt ?? '', hit);
+  });
+
+  document.querySelectorAll<HTMLElement>('.photo').forEach((photo) => {
+    photo.addEventListener('click', () => openLightbox(photo.dataset.src ?? '', photo.dataset.alt ?? '', photo));
+  });
+
+  toggle.addEventListener('click', () => setPaused(!userPaused));
+
+  let resizeTimer: number;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(layout, 100);
+  });
+
+  setPaused(userPaused);
+  layout();
+  requestAnimationFrame((t) => { last = t; frame(t); });
 </script>
+
+<style>
+  :global(body.site) .gallery-hero { padding-top: clamp(40px, 5vw, 64px); padding-bottom: 0; border-bottom: 0; }
+  :global(body.site) .gallery-hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); }
+
+  /* ---------- 3D ring ---------- */
+  .ring-section { padding: 8px 0 clamp(48px, 7vw, 88px); overflow: hidden; }
+
+  .stage {
+    --card-w: clamp(130px, 17vw, 230px);
+    position: relative;
+    height: clamp(360px, 44vw, 520px);
+    perspective: 1500px;
+    perspective-origin: 50% 40%;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .stage.is-dragging { cursor: grabbing; }
+
+  /* A soft floor shadow grounds the ring. */
+  .stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: min(70%, 760px);
+    height: 40px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 70%);
+    pointer-events: none;
+  }
+
+  .tilt {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: translateY(4%) rotateX(-9deg);
+  }
+
+  .ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--card-w);
+    aspect-ratio: 3 / 4;
+    margin: calc(var(--card-w) * -0.667) 0 0 calc(var(--card-w) * -0.5);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .card {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #211e1b;
+    cursor: inherit;
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    /* Both faces stay visible: the back of a card shows the photo mirrored, dimmed by the script. */
+    backface-visibility: visible;
+  }
+  .card img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 0; pointer-events: none; }
+
+  .ring-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .ring-caption { margin: 0; display: grid; gap: 4px; min-height: 3.6em; }
+  .cap-event { color: var(--red-bright); font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; }
+  .cap-alt { color: var(--paper); font-family: var(--serif); font-size: clamp(1.2rem, 2.2vw, 1.6rem); line-height: 1.2; }
+
+  .ring-btn {
+    padding: 9px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--paper);
+    font: 600 .85rem var(--sans);
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+  }
+  .ring-btn:hover { background: rgba(243,238,230,.08); border-color: var(--paper); }
+
+  .ring-hint { margin: 14px auto 0; color: var(--faint); font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---------- Browse grid ---------- */
+  .event-block { margin-top: 56px; }
+
+  .event-block-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .event-block-head h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .event-block-head span { color: var(--red-bright); font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
+
+  .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+
+  .photo { padding: 0; border: 0; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 6px; background: #211e1b; cursor: zoom-in; }
+  .photo img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 0; transition: transform .5s ease; }
+  .photo:hover img { transform: scale(1.05); }
+
+  /* ---------- Lightbox ---------- */
+  dialog {
+    max-width: 94vw;
+    max-height: 92vh;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  dialog::backdrop { background: rgba(10,9,8,.92); }
+  dialog img { display: block; max-width: 94vw; max-height: 88vh; margin: 0 auto; border-radius: 6px; }
+
+  .lb-close {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    padding: 0 0 3px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgba(15,14,13,.8);
+    color: var(--paper);
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .lb-close:hover { background: var(--paper); color: var(--bg); }
+
+  @media (max-width: 640px) {
+    .ring-bar { align-items: flex-start; flex-direction: column; gap: 14px; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+</style>
