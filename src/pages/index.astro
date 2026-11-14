@@ -12,12 +12,12 @@ import slide5 from '../assets/slideshow/IMG_3562.JPG';
 import slide6 from '../assets/slideshow/IMG_6118.png';
 import slide7 from '../assets/slideshow/IMG_3552.JPG';
 
-import wolfImage from '../assets/logos/Wolf.png';
+import logoImage from '../assets/logos/Logo.png';
 
 // Pass the imported image objects directly so astro:assets can resize/convert them.
 const slideshowImages = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 
-const heroImage = wolfImage;
+const heroImage = logoImage;
 
 const heroAlt = 'ACM at NC State members together at an event'; // describe your photo here
 const heroCaption = 'The Wolfpack builds here';
@@ -68,9 +68,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
         </h1>
 
         <p class="hero-copy">
-          We're ACM at NC State — a community of builders,
-          problem-solvers, and future technologists. Learn something
-          new, meet your people, and turn your ideas into things that matter.
+          We're ACM at NC State — a student organization 
+          helping students in tech & software thrive 
+          academically, professionally, and socially.
+          By a student. For a student.
         </p>
 
         <div class="hero-actions">
@@ -119,9 +120,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="reveal">
           <h2 class="display">Find your people.<br />Find your <span class="accent">potential.</span></h2>
           <p class="intro">
-            Computer science is bigger than code. We're here to make the
-            field more approachable, help students grow their skills,
-            and create connections that last beyond graduation.
+            ACM at NC State. A student organization helping students in 
+            tech & software thrive academically, professionally, and socially.
+            We are here to help students grow their skills and create connections 
+            that last beyond graduation.
           </p>
         </div>
 
@@ -153,8 +155,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="reveal">
           <h2 class="display">Come for the tech.<br />Stay for the <span class="accent">people.</span></h2>
           <p class="intro">
-            From hands-on workshops to industry conversations and laid-back
-            socials, there's more than one way to be part of the community.
+            From hands-on projects to industry conversations and socials,
+            there's more than one way to be part of the community.
           </p>
         </div>
 
